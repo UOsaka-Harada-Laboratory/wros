@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 ![repo size](https://img.shields.io/github/repo-size/Osaka-University-Harada-Laboratory/onrobot)
 
-- ROS Noetic node examples with some functions implemented in [WRS](https://github.com/wanweiwei07/wrs).
+- ROS Noetic node examples with robot motion planners implemented in [WRS](https://github.com/wanweiwei07/wrs).
 
 # Features
 
@@ -30,11 +30,15 @@ COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker compose build --no-cache --p
 # Usage
 ```bash
 docker compose up
+```
+```bash
 xhost +
 docker exec -it wros_noetic_container bash
 roslaunch wros_tutorials plan_tube_grasp_example.launch
 rosservice call wros_tutorials/plan_grasp
 ```
+
+<img src=image/plan_grasp.gif width=720>  
 
 # Contributors
 
