@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>wros_tutorials</name>
+  <version>0.0.0</version>
+  <description>An example of ROS Noetic package with WRS.</description>
+  <maintainer email="taku8926@gmail.com">takuya-ki</maintainer>
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>rospy</depend>
+  <depend>std_msgs</depend>
+  <depend>std_srvs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>tf</depend>
+  <depend>moveit_core</depend>
+  <depend>moveit_ros_planning_interface</depend>
+</package>
