@@ -1,3 +1,4 @@
 [submodule "catkin_ws/noetic/src/wros_tutorials/modules/wrs"]
 	path = catkin_ws/noetic/src/wros_tutorials/modules/wrs
 	url = git@github.com:wanweiwei07/wrs.git
+	ignore = dirty

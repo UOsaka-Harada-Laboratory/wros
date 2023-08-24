@@ -7,44 +7,19 @@ RUN curl -sSL 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xC1CF6E31E6
 RUN apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends tzdata
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-noetic-desktop-full \
-    ros-noetic-gazebo-ros-pkgs \
-    ros-noetic-gazebo-ros-control \
-    ros-noetic-ros-control \
-    ros-noetic-ros-controllers \
-    ros-noetic-control-toolbox \
-    ros-noetic-moveit \
-    ros-noetic-effort-controllers \
-    ros-noetic-forward-command-controller \
-    ros-noetic-joint-state-controller \
-    ros-noetic-joint-trajectory-controller \
-    ros-noetic-position-controllers \
-    ros-noetic-velocity-controllers \
     ros-noetic-tf \
-    ros-noetic-tf2-tools \
-    ros-noetic-robot-state-publisher \
-    ros-noetic-genpy \
-    ros-noetic-industrial-core \
-    ros-noetic-roslint \
-    ros-noetic-ddynamic-reconfigure \
     python3-osrf-pycommon \
     python3-catkin-tools \
     python3-rosdep \
     python3-rospkg \
     python3-pip \
+    python3-tk \
     byobu \
-    libudev-dev \
     git \
     vim \
-    net-tools \
     build-essential \
-    libcanberra-gtk* \
-    dbus \
-    software-properties-common \
-    imagemagick \
-    python3-tk \
-    aptitude \
-    dvipng \
     libxkbcommon-x11-0 \
+    libcanberra-gtk* \
     libxcb*
 
 RUN mkdir -p /tmp/

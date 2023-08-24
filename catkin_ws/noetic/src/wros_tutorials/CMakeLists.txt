@@ -6,8 +6,6 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   std_srvs
   geometry_msgs
-  moveit_core
-  moveit_ros_planning_interface
   tf
 )
 
@@ -19,8 +17,6 @@ catkin_package(
     std_msgs
     std_srvs
     geometry_msgs
-    moveit_core
-    moveit_ros_planning_interface
     tf
 )
 
