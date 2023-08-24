@@ -5,6 +5,7 @@ from catkin_pkg.python_setup import generate_distutils_setup
 
 # fetch values from package.xml
 setup_args = generate_distutils_setup(
+    package_dir={'': 'modules/wrs'},
     packages=['basis',
               'drivers',
               'grasping',
@@ -19,8 +20,6 @@ setup_args = generate_distutils_setup(
               'robot_sim',
               'vision',
               'visualization'],
-    package_dir={'': 'modules/wrs'},
-    requires=['']
 )
 
 setup(**setup_args)

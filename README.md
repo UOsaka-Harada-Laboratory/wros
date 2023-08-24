@@ -35,7 +35,7 @@ docker compose up
 xhost +
 docker exec -it wros_noetic_container bash
 byobu
-roslaunch wros_tutorials plan_tube_grasp.launch
+roslaunch wros_tutorials plan_grasp.launch
 rosservice call wros_tutorials/plan_grasp
 ```
 

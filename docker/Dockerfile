@@ -46,5 +46,5 @@ RUN pip install -r /tmp/requirements.txt
 
 # Generates bash commands
 WORKDIR /catkin_ws/src/
-RUN echo "roslaunch wros_tutorials plan_tube_grasp.launch" >> ~/.bash_history
+RUN echo "roslaunch wros_tutorials plan_grasp.launch" >> ~/.bash_history
 RUN echo "rosservice call /plan_grasp" >> ~/.bash_history

@@ -83,7 +83,7 @@ def gen_marker(frame_name, name, id_int, pose, stl_path):
     marker.color.r = 0.0
     marker.color.g = 0.0
     marker.color.b = 0.0
-    marker.mesh_resource = 'package://wros_tutorials/'+stl_path
+    marker.mesh_resource = 'package://' + os.path.join(pkg_name, stl_path)
     marker.mesh_use_embedded_materials = True
 
     return marker
@@ -94,7 +94,7 @@ def plan_grasps(req):
 
     grasp_info_list = gpa.plan_grasps(
         gripper,
-        object_tube,
+        grasp_target,
         angle_between_contact_normals=math.radians(90),
         openning_direction='loc_x',
         max_samples=4,
@@ -136,20 +136,21 @@ def plan_grasps(req):
 if __name__ == '__main__':
     rospy.init_node('grasp_tf_publisher')
     pkg_path = rospkg.RosPack().get_path('wros_tutorials')
+    pkg_name = rospy.get_param("~pkg_name")
 
     base = wd.World(cam_pos=[1, 1, 1], lookat_pos=[0, 0, 0])
     base.taskMgr.step()
-    gripper_stl_path = ('meshes/hande/base_cvt.stl')
-    finger1_stl_path = ('meshes/hande/finger1_cvt.stl')
-    finger2_stl_path = ('meshes/hande/finger2_cvt.stl')
+    gripper_stl_path = rospy.get_param("~hande_b_mesh_path")
+    finger1_stl_path = rospy.get_param("~hande_f1_mesh_path")
+    finger2_stl_path = rospy.get_param("~hande_f2_mesh_path")
     gripper = he.RobotiqHE()
     gm.gen_frame().attach_to(base)
     base.taskMgr.step()
-    object_stl_path = os.path.join(
-        pkg_path, 'meshes/tubebig.stl')
-    object_tube = cm.CollisionModel(object_stl_path)
-    object_tube.set_rgba([.9, .75, .35, .3])
-    object_tube.attach_to(base)
+    object_stl_path = rospy.get_param("~object_mesh_path")
+    grasp_target = cm.CollisionModel(
+        os.path.join(pkg_path, object_stl_path))
+    grasp_target.set_rgba([.9, .75, .35, .3])
+    grasp_target.attach_to(base)
     base.taskMgr.step()
 
     markers = MarkerArray()
@@ -162,7 +163,7 @@ if __name__ == '__main__':
     pose.orientation.z = 0.
     pose.orientation.w = 1.
     markers.markers.append(
-        gen_marker('base_link', 'object', 0, pose, 'meshes/tubebig.stl'))
+        gen_marker('base_link', 'object', 0, pose, object_stl_path))
     pose_dict = {}
     planning_service = rospy.Service(
         'plan_grasp', Empty, plan_grasps)

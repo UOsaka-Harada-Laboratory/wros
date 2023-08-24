@@ -1,0 +1,21 @@
+<launch>
+  <arg name="pkg_name" default="wros_tutorials"/>
+  <arg name="object_mesh_path" default="modules/wrs/0000_examples/objects/tubebig.stl"/>
+  <arg name="hande_body_mesh_path" default="modules/wrs/robot_sim/end_effectors/gripper/robotiqhe/meshes/base_cvt.stl"/>
+  <arg name="hande_finger1_mesh_path" default="modules/wrs/robot_sim/end_effectors/gripper/robotiqhe/meshes/finger1_cvt.stl"/>
+  <arg name="hande_finger2_mesh_path" default="modules/wrs/robot_sim/end_effectors/gripper/robotiqhe/meshes/finger2_cvt.stl"/>
+
+  <!-- tf generated using markers -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_broadcaster" args="0. 0. 0. 0. 0. 0. 1. world base_link"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="object_broadcaster" args="0. 0. 0. 0. 0. 0. 1. world object"/>
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find wros_tutorials)/config/grasps.rviz"/>
+
+  <!-- grasp planning service example node -->
+  <node pkg="$(arg pkg_name)" name="grasp_planning_service" type="grasp_planning_service.py" respawn="true" output="screen" >
+    <param name="pkg_name" type='str' value="$(arg pkg_name)" />
+    <param name="object_mesh_path" type='str' value="$(arg object_mesh_path)" />
+    <param name="hande_b_mesh_path" value="$(arg hande_body_mesh_path)" />
+    <param name="hande_f1_mesh_path" value="$(arg hande_finger1_mesh_path)" />
+    <param name="hande_f2_mesh_path" value="$(arg hande_finger2_mesh_path)" />
+  </node>
+</launch>
