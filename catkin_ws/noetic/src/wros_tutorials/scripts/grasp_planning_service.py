@@ -2,17 +2,17 @@
 
 import os
 import tf
-import time
 import math
 import rospy
 import rospkg
 import numpy as np
+from copy import deepcopy
+import copy as copy_module
 from geometry_msgs.msg import (Pose,
                                Vector3,
                                Quaternion,
                                PoseStamped)
 from std_srvs.srv import Empty, EmptyResponse
-from moveit_msgs.msg import PlanningScene, ObjectColor
 from visualization_msgs.msg import Marker, MarkerArray
 
 import modeling.geometric_model as gm
@@ -25,10 +25,10 @@ import robot_sim.end_effectors.gripper.robotiqhe.robotiqhe as he
 def rotmat2q(rot):
     """ Converts the rotation matrix into quaternion.
 
-        :param quat: the rotation matrix (shape: :math:`[3, 3]`)
-        :type quat: numpy.ndarray
-        :return: quaternion [x, y, z, w] (shape: :math:`[4,]`)
-        :rtype: numpy.ndarray
+        Attributes:
+            rot (numpy.ndarray): the rotation matrix (shape: :math:`[3, 3]`)
+        Return:
+            quaternion [x, y, z, w] (shape: :math:`[4,]`)
     """
 
     R = np.eye(4)
@@ -47,15 +47,15 @@ def update_tfs(br, pose_dict):
     if pose_dict is not {}:
         for name, pose in pose_dict.items():
             br.sendTransform((pose.position.x,
-                            pose.position.y,
-                            pose.position.z),
-                            (pose.orientation.x,
-                            pose.orientation.y,
-                            pose.orientation.z,
-                            pose.orientation.w),
-                            rospy.Time.now(),
-                            name,
-                            'object')
+                              pose.position.y,
+                              pose.position.z),
+                             (pose.orientation.x,
+                              pose.orientation.y,
+                              pose.orientation.z,
+                              pose.orientation.w),
+                             rospy.Time.now(),
+                             name,
+                             'object')
 
 
 def gen_marker(frame_name, name, id_int, pose, stl_path):
@@ -66,7 +66,7 @@ def gen_marker(frame_name, name, id_int, pose, stl_path):
             name (str): Unique marker name
             id_int (int): Unique id number
             pose (geometry_msgs/Pose): Pose of the marker
-            stl_path (str): 
+            stl_path (str): Stl file path
     """
     marker = Marker()
     marker.header.frame_id = frame_name
@@ -102,28 +102,34 @@ def plan_grasps(req):
         contact_offset=.016)
 
     for i, grasp_info in enumerate(grasp_info_list):
-        jaw_width, jaw_center_pos, jaw_center_rotmat, hnd_pos, hnd_rotmat = grasp_info
-        gripper.grip_at_with_jcpose(jaw_center_pos, jaw_center_rotmat, jaw_width)
+        jaw_width, jaw_pos, jaw_rotmat, hnd_pos, hnd_rotmat = grasp_info
+        gripper.grip_at_with_jcpose(jaw_pos, jaw_rotmat, jaw_width)
         gripper.gen_meshmodel().attach_to(base)
 
-        pose = Pose()
-        pose.position.x = hnd_pos[0]
-        pose.position.y = hnd_pos[1]
-        pose.position.z = hnd_pos[2]
+        pose_b = Pose()
+        pose_b.position.x = hnd_pos[0]
+        pose_b.position.y = hnd_pos[1]
+        pose_b.position.z = hnd_pos[2]
         q = rotmat2q(hnd_rotmat)
-        pose.orientation.x = q[0]
-        pose.orientation.y = q[1]
-        pose.orientation.z = q[2]
-        pose.orientation.w = q[3]
+        pose_b.orientation.x = q[0]
+        pose_b.orientation.y = q[1]
+        pose_b.orientation.z = q[2]
+        pose_b.orientation.w = q[3]
         markers.markers.append(
-            gen_marker('object', 'hande_b', i, pose, gripper_stl_path))
+            gen_marker('object', 'hande_b', i, pose_b, gripper_stl_path))
+        pose_f1 = copy_module.deepcopy(pose_b)
+        # pose_f1.position.x +=  # TODO
+        # pose_f1.position.z +=  # TODO
         markers.markers.append(
-            gen_marker('object', 'hande_f1', i, pose, finger1_stl_path))
+            gen_marker('object', 'hande_f1', i, pose_f1, finger1_stl_path))
+        pose_f2 = copy_module.deepcopy(pose_b)
+        # pose_f2.position.x +=  # TODO
+        # pose_f2.position.z +=  # TODO
         markers.markers.append(
-            gen_marker('object', 'hande_f2', i, pose, finger2_stl_path))
+            gen_marker('object', 'hande_f2', i, pose_f2, finger2_stl_path))
 
-        pose_dict['hande_'+str(i)] = pose
-    
+        pose_dict['hande_'+str(i)] = pose_b
+
     return EmptyResponse()
 
 
