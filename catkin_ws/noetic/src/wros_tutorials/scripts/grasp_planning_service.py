@@ -6,12 +6,7 @@ import math
 import rospy
 import rospkg
 import numpy as np
-from copy import deepcopy
-import copy as copy_module
-from geometry_msgs.msg import (Pose,
-                               Vector3,
-                               Quaternion,
-                               PoseStamped)
+from geometry_msgs.msg import Pose
 from std_srvs.srv import Empty, EmptyResponse
 from visualization_msgs.msg import Marker, MarkerArray
 
