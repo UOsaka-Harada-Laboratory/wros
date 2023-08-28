@@ -159,7 +159,7 @@ def plan_grasps(req):
 
 
 if __name__ == '__main__':
-    rospy.init_node('grasp_tf_publisher')
+    rospy.init_node('grasp_planning_server')
     pkg_path = rospkg.RosPack().get_path('wros_tutorials')
     pkg_name = rospy.get_param("~pkg_name")
 
