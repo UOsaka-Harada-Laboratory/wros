@@ -117,18 +117,43 @@ def plan_grasps(req):
         pose_b.orientation.w = q[3]
         markers.markers.append(
             gen_marker('object', 'hande_b', i, pose_b, gripper_stl_path))
-        pose_f1 = copy_module.deepcopy(pose_b)
-        # pose_f1.position.x +=  # TODO
-        # pose_f1.position.z +=  # TODO
-        markers.markers.append(
-            gen_marker('object', 'hande_f1', i, pose_f1, finger1_stl_path))
-        pose_f2 = copy_module.deepcopy(pose_b)
-        # pose_f2.position.x +=  # TODO
-        # pose_f2.position.z +=  # TODO
-        markers.markers.append(
-            gen_marker('object', 'hande_f2', i, pose_f2, finger2_stl_path))
 
         pose_dict['hande_'+str(i)] = pose_b
+        update_tfs(br, pose_dict)
+
+        pose_f1 = Pose()
+        pose_f1.position.x = -0.025
+        pose_f1.position.y = 0.0
+        pose_f1.position.z = 0.11
+        pose_f1.orientation.x = 0.
+        pose_f1.orientation.y = 0.
+        pose_f1.orientation.z = 0.
+        pose_f1.orientation.w = 1.
+        markers.markers.append(
+            gen_marker(
+                'hande_'+str(i),
+                'hande_f1',
+                i,
+                pose_f1,
+                finger1_stl_path))
+        pose_f2 = Pose()
+        pose_f2.position.x = 0.025
+        pose_f2.position.y = 0.0
+        pose_f2.position.z = 0.11
+        pose_f2.orientation.x = 0.
+        pose_f2.orientation.y = 0.
+        pose_f2.orientation.z = 0.
+        pose_f2.orientation.w = 1.
+        markers.markers.append(
+            gen_marker(
+                'hande_'+str(i),
+                'hande_f2',
+                i,
+                pose_f2,
+                finger2_stl_path))
+
+        pose_dict['hande_f1_'+str(i)] = pose_f1
+        pose_dict['hande_f2_'+str(i)] = pose_f2
 
     return EmptyResponse()
 
@@ -164,12 +189,13 @@ if __name__ == '__main__':
     pose.orientation.w = 1.
     markers.markers.append(
         gen_marker('base_link', 'object', 0, pose, object_stl_path))
+
     pose_dict = {}
+    br = tf.TransformBroadcaster()
     planning_service = rospy.Service(
         'plan_grasp', Empty, plan_grasps)
     pub = rospy.Publisher('grasp_pub', MarkerArray, queue_size=1)
 
-    br = tf.TransformBroadcaster()
     rate = rospy.Rate(1)
     while not rospy.is_shutdown():
         pub.publish(markers)
