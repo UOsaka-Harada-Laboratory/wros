@@ -41,7 +41,7 @@ RUN wget --no-check-certificate https://www.python.org/ftp/python/3.9.5/Python-3
     && make install
 RUN apt-get autoremove -y
 
-ADD requirements.txt /tmp/
+COPY requirements.txt /tmp/
 RUN pip install -r /tmp/requirements.txt
 
 # Generates bash commands
