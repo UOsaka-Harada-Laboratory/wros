@@ -12,4 +12,5 @@
   <depend>std_srvs</depend>
   <depend>geometry_msgs</depend>
   <depend>tf</depend>
+  <depend>tf2_ros</depend>
 </package>

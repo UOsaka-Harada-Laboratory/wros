@@ -5,9 +5,10 @@ import tf
 import math
 import rospy
 import rospkg
+import tf2_ros
 import numpy as np
-from geometry_msgs.msg import Pose
 from std_srvs.srv import Empty, EmptyResponse
+from geometry_msgs.msg import Pose, TransformStamped
 from visualization_msgs.msg import Marker, MarkerArray
 
 import modeling.geometric_model as gm
@@ -31,26 +32,27 @@ def rotmat2q(rot):
     return tf.transformations.quaternion_from_matrix(R)
 
 
-def update_tfs(br, pose_dict):
+def update_tfs(pose_dict):
     """ Sends tfs.
 
         Attributes:
-            br: tf.TransformBroadcaster
             pose_dict: dict{name(str): pose(geometry_msgs/Pose)}
     """
 
     if pose_dict is not {}:
         for name, pose in pose_dict.items():
-            br.sendTransform((pose.position.x,
-                              pose.position.y,
-                              pose.position.z),
-                             (pose.orientation.x,
-                              pose.orientation.y,
-                              pose.orientation.z,
-                              pose.orientation.w),
-                             rospy.Time.now(),
-                             name,
-                             'object')
+            t = TransformStamped()
+            t.header.stamp = rospy.Time.now()
+            t.header.frame_id = 'object'
+            t.child_frame_id = name
+            t.transform.translation.x = pose.position.x
+            t.transform.translation.y = pose.position.y
+            t.transform.translation.z = pose.position.z
+            t.transform.rotation.x = pose.orientation.x
+            t.transform.rotation.y = pose.orientation.y
+            t.transform.rotation.z = pose.orientation.z
+            t.transform.rotation.w = pose.orientation.w
+            br.sendTransform(t)
 
 
 def gen_marker(frame_name, name, id_int, pose, stl_path):
@@ -63,6 +65,7 @@ def gen_marker(frame_name, name, id_int, pose, stl_path):
             pose (geometry_msgs/Pose): Pose of the marker
             stl_path (str): Stl file path
     """
+
     marker = Marker()
     marker.header.frame_id = frame_name
     marker.header.stamp = rospy.Time()
@@ -114,7 +117,7 @@ def plan_grasps(req):
             gen_marker('object', 'hande_b', i, pose_b, gripper_stl_path))
 
         pose_dict['hande_'+str(i)] = pose_b
-        update_tfs(br, pose_dict)
+        update_tfs(pose_dict)
 
         pose_f1 = Pose()
         pose_f1.position.x = -0.025
@@ -186,7 +189,7 @@ if __name__ == '__main__':
         gen_marker('base_link', 'object', 0, pose, object_stl_path))
 
     pose_dict = {}
-    br = tf.TransformBroadcaster()
+    br = tf2_ros.StaticTransformBroadcaster()
     planning_service = rospy.Service(
         'plan_grasp', Empty, plan_grasps)
     pub = rospy.Publisher('grasp_pub', MarkerArray, queue_size=1)
@@ -195,5 +198,5 @@ if __name__ == '__main__':
     while not rospy.is_shutdown():
         pub.publish(markers)
         base.taskMgr.step()
-        update_tfs(br, pose_dict)
+        update_tfs(pose_dict)
         rate.sleep()

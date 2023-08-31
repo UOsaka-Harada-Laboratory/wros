@@ -7,6 +7,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_srvs
   geometry_msgs
   tf
+  tf2_ros
 )
 
 catkin_python_setup()
@@ -18,6 +19,7 @@ catkin_package(
     std_srvs
     geometry_msgs
     tf
+    tf2_ros
 )
 
 include_directories(
