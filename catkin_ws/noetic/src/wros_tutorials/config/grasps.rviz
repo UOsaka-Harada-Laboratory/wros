@@ -4,6 +4,7 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
+        - /TF1
         - /MarkerArray1/Namespaces1
       Splitter Ratio: 0.5
     Tree Height: 725
@@ -59,6 +60,270 @@ Visualization Manager:
         All Enabled: true
         base_link:
           Value: true
+        gripper.lft_inner.lnks.1_0:
+          Value: true
+        gripper.lft_inner.lnks.1_1:
+          Value: true
+        gripper.lft_inner.lnks.1_10:
+          Value: true
+        gripper.lft_inner.lnks.1_11:
+          Value: true
+        gripper.lft_inner.lnks.1_2:
+          Value: true
+        gripper.lft_inner.lnks.1_3:
+          Value: true
+        gripper.lft_inner.lnks.1_4:
+          Value: true
+        gripper.lft_inner.lnks.1_5:
+          Value: true
+        gripper.lft_inner.lnks.1_6:
+          Value: true
+        gripper.lft_inner.lnks.1_7:
+          Value: true
+        gripper.lft_inner.lnks.1_8:
+          Value: true
+        gripper.lft_inner.lnks.1_9:
+          Value: true
+        gripper.lft_outer.lnks.1_0:
+          Value: true
+        gripper.lft_outer.lnks.1_1:
+          Value: true
+        gripper.lft_outer.lnks.1_10:
+          Value: true
+        gripper.lft_outer.lnks.1_11:
+          Value: true
+        gripper.lft_outer.lnks.1_2:
+          Value: true
+        gripper.lft_outer.lnks.1_3:
+          Value: true
+        gripper.lft_outer.lnks.1_4:
+          Value: true
+        gripper.lft_outer.lnks.1_5:
+          Value: true
+        gripper.lft_outer.lnks.1_6:
+          Value: true
+        gripper.lft_outer.lnks.1_7:
+          Value: true
+        gripper.lft_outer.lnks.1_8:
+          Value: true
+        gripper.lft_outer.lnks.1_9:
+          Value: true
+        gripper.lft_outer.lnks.2_0:
+          Value: true
+        gripper.lft_outer.lnks.2_1:
+          Value: true
+        gripper.lft_outer.lnks.2_10:
+          Value: true
+        gripper.lft_outer.lnks.2_11:
+          Value: true
+        gripper.lft_outer.lnks.2_2:
+          Value: true
+        gripper.lft_outer.lnks.2_3:
+          Value: true
+        gripper.lft_outer.lnks.2_4:
+          Value: true
+        gripper.lft_outer.lnks.2_5:
+          Value: true
+        gripper.lft_outer.lnks.2_6:
+          Value: true
+        gripper.lft_outer.lnks.2_7:
+          Value: true
+        gripper.lft_outer.lnks.2_8:
+          Value: true
+        gripper.lft_outer.lnks.2_9:
+          Value: true
+        gripper.lft_outer.lnks.3_0:
+          Value: true
+        gripper.lft_outer.lnks.3_1:
+          Value: true
+        gripper.lft_outer.lnks.3_10:
+          Value: true
+        gripper.lft_outer.lnks.3_11:
+          Value: true
+        gripper.lft_outer.lnks.3_2:
+          Value: true
+        gripper.lft_outer.lnks.3_3:
+          Value: true
+        gripper.lft_outer.lnks.3_4:
+          Value: true
+        gripper.lft_outer.lnks.3_5:
+          Value: true
+        gripper.lft_outer.lnks.3_6:
+          Value: true
+        gripper.lft_outer.lnks.3_7:
+          Value: true
+        gripper.lft_outer.lnks.3_8:
+          Value: true
+        gripper.lft_outer.lnks.3_9:
+          Value: true
+        gripper.lft_outer.lnks.4_0:
+          Value: true
+        gripper.lft_outer.lnks.4_1:
+          Value: true
+        gripper.lft_outer.lnks.4_10:
+          Value: true
+        gripper.lft_outer.lnks.4_11:
+          Value: true
+        gripper.lft_outer.lnks.4_2:
+          Value: true
+        gripper.lft_outer.lnks.4_3:
+          Value: true
+        gripper.lft_outer.lnks.4_4:
+          Value: true
+        gripper.lft_outer.lnks.4_5:
+          Value: true
+        gripper.lft_outer.lnks.4_6:
+          Value: true
+        gripper.lft_outer.lnks.4_7:
+          Value: true
+        gripper.lft_outer.lnks.4_8:
+          Value: true
+        gripper.lft_outer.lnks.4_9:
+          Value: true
+        gripper.rgt_inner.lnks.1_0:
+          Value: true
+        gripper.rgt_inner.lnks.1_1:
+          Value: true
+        gripper.rgt_inner.lnks.1_10:
+          Value: true
+        gripper.rgt_inner.lnks.1_11:
+          Value: true
+        gripper.rgt_inner.lnks.1_2:
+          Value: true
+        gripper.rgt_inner.lnks.1_3:
+          Value: true
+        gripper.rgt_inner.lnks.1_4:
+          Value: true
+        gripper.rgt_inner.lnks.1_5:
+          Value: true
+        gripper.rgt_inner.lnks.1_6:
+          Value: true
+        gripper.rgt_inner.lnks.1_7:
+          Value: true
+        gripper.rgt_inner.lnks.1_8:
+          Value: true
+        gripper.rgt_inner.lnks.1_9:
+          Value: true
+        gripper.rgt_outer.lnks.1_0:
+          Value: true
+        gripper.rgt_outer.lnks.1_1:
+          Value: true
+        gripper.rgt_outer.lnks.1_10:
+          Value: true
+        gripper.rgt_outer.lnks.1_11:
+          Value: true
+        gripper.rgt_outer.lnks.1_2:
+          Value: true
+        gripper.rgt_outer.lnks.1_3:
+          Value: true
+        gripper.rgt_outer.lnks.1_4:
+          Value: true
+        gripper.rgt_outer.lnks.1_5:
+          Value: true
+        gripper.rgt_outer.lnks.1_6:
+          Value: true
+        gripper.rgt_outer.lnks.1_7:
+          Value: true
+        gripper.rgt_outer.lnks.1_8:
+          Value: true
+        gripper.rgt_outer.lnks.1_9:
+          Value: true
+        gripper.rgt_outer.lnks.2_0:
+          Value: true
+        gripper.rgt_outer.lnks.2_1:
+          Value: true
+        gripper.rgt_outer.lnks.2_10:
+          Value: true
+        gripper.rgt_outer.lnks.2_11:
+          Value: true
+        gripper.rgt_outer.lnks.2_2:
+          Value: true
+        gripper.rgt_outer.lnks.2_3:
+          Value: true
+        gripper.rgt_outer.lnks.2_4:
+          Value: true
+        gripper.rgt_outer.lnks.2_5:
+          Value: true
+        gripper.rgt_outer.lnks.2_6:
+          Value: true
+        gripper.rgt_outer.lnks.2_7:
+          Value: true
+        gripper.rgt_outer.lnks.2_8:
+          Value: true
+        gripper.rgt_outer.lnks.2_9:
+          Value: true
+        gripper.rgt_outer.lnks.3_0:
+          Value: true
+        gripper.rgt_outer.lnks.3_1:
+          Value: true
+        gripper.rgt_outer.lnks.3_10:
+          Value: true
+        gripper.rgt_outer.lnks.3_11:
+          Value: true
+        gripper.rgt_outer.lnks.3_2:
+          Value: true
+        gripper.rgt_outer.lnks.3_3:
+          Value: true
+        gripper.rgt_outer.lnks.3_4:
+          Value: true
+        gripper.rgt_outer.lnks.3_5:
+          Value: true
+        gripper.rgt_outer.lnks.3_6:
+          Value: true
+        gripper.rgt_outer.lnks.3_7:
+          Value: true
+        gripper.rgt_outer.lnks.3_8:
+          Value: true
+        gripper.rgt_outer.lnks.3_9:
+          Value: true
+        gripper.rgt_outer.lnks.4_0:
+          Value: true
+        gripper.rgt_outer.lnks.4_1:
+          Value: true
+        gripper.rgt_outer.lnks.4_10:
+          Value: true
+        gripper.rgt_outer.lnks.4_11:
+          Value: true
+        gripper.rgt_outer.lnks.4_2:
+          Value: true
+        gripper.rgt_outer.lnks.4_3:
+          Value: true
+        gripper.rgt_outer.lnks.4_4:
+          Value: true
+        gripper.rgt_outer.lnks.4_5:
+          Value: true
+        gripper.rgt_outer.lnks.4_6:
+          Value: true
+        gripper.rgt_outer.lnks.4_7:
+          Value: true
+        gripper.rgt_outer.lnks.4_8:
+          Value: true
+        gripper.rgt_outer.lnks.4_9:
+          Value: true
+        body_0:
+          Value: true
+        body_1:
+          Value: true
+        body_10:
+          Value: true
+        body_11:
+          Value: true
+        body_2:
+          Value: true
+        body_3:
+          Value: true
+        body_4:
+          Value: true
+        body_5:
+          Value: true
+        body_6:
+          Value: true
+        body_7:
+          Value: true
+        body_8:
+          Value: true
+        body_9:
+          Value: true
         object:
           Value: true
         world:
@@ -68,13 +333,276 @@ Visualization Manager:
       Name: TF
       Show Arrows: true
       Show Axes: true
-      Show Names: true
+      Show Names: false
       Tree:
         world:
           base_link:
             {}
           object:
-            {}
+            gripper.lft_inner.lnks.1_0:
+              {}
+            gripper.lft_inner.lnks.1_1:
+              {}
+            gripper.lft_inner.lnks.1_10:
+              {}
+            gripper.lft_inner.lnks.1_11:
+              {}
+            gripper.lft_inner.lnks.1_2:
+              {}
+            gripper.lft_inner.lnks.1_3:
+              {}
+            gripper.lft_inner.lnks.1_4:
+              {}
+            gripper.lft_inner.lnks.1_5:
+              {}
+            gripper.lft_inner.lnks.1_6:
+              {}
+            gripper.lft_inner.lnks.1_7:
+              {}
+            gripper.lft_inner.lnks.1_8:
+              {}
+            gripper.lft_inner.lnks.1_9:
+              {}
+            gripper.lft_outer.lnks.1_0:
+              {}
+            gripper.lft_outer.lnks.1_1:
+              {}
+            gripper.lft_outer.lnks.1_10:
+              {}
+            gripper.lft_outer.lnks.1_11:
+              {}
+            gripper.lft_outer.lnks.1_2:
+              {}
+            gripper.lft_outer.lnks.1_3:
+              {}
+            gripper.lft_outer.lnks.1_4:
+              {}
+            gripper.lft_outer.lnks.1_5:
+              {}
+            gripper.lft_outer.lnks.1_6:
+              {}
+            gripper.lft_outer.lnks.1_7:
+              {}
+            gripper.lft_outer.lnks.1_8:
+              {}
+            gripper.lft_outer.lnks.1_9:
+              {}
+            gripper.lft_outer.lnks.2_0:
+              {}
+            gripper.lft_outer.lnks.2_1:
+              {}
+            gripper.lft_outer.lnks.2_10:
+              {}
+            gripper.lft_outer.lnks.2_11:
+              {}
+            gripper.lft_outer.lnks.2_2:
+              {}
+            gripper.lft_outer.lnks.2_3:
+              {}
+            gripper.lft_outer.lnks.2_4:
+              {}
+            gripper.lft_outer.lnks.2_5:
+              {}
+            gripper.lft_outer.lnks.2_6:
+              {}
+            gripper.lft_outer.lnks.2_7:
+              {}
+            gripper.lft_outer.lnks.2_8:
+              {}
+            gripper.lft_outer.lnks.2_9:
+              {}
+            gripper.lft_outer.lnks.3_0:
+              {}
+            gripper.lft_outer.lnks.3_1:
+              {}
+            gripper.lft_outer.lnks.3_10:
+              {}
+            gripper.lft_outer.lnks.3_11:
+              {}
+            gripper.lft_outer.lnks.3_2:
+              {}
+            gripper.lft_outer.lnks.3_3:
+              {}
+            gripper.lft_outer.lnks.3_4:
+              {}
+            gripper.lft_outer.lnks.3_5:
+              {}
+            gripper.lft_outer.lnks.3_6:
+              {}
+            gripper.lft_outer.lnks.3_7:
+              {}
+            gripper.lft_outer.lnks.3_8:
+              {}
+            gripper.lft_outer.lnks.3_9:
+              {}
+            gripper.lft_outer.lnks.4_0:
+              {}
+            gripper.lft_outer.lnks.4_1:
+              {}
+            gripper.lft_outer.lnks.4_10:
+              {}
+            gripper.lft_outer.lnks.4_11:
+              {}
+            gripper.lft_outer.lnks.4_2:
+              {}
+            gripper.lft_outer.lnks.4_3:
+              {}
+            gripper.lft_outer.lnks.4_4:
+              {}
+            gripper.lft_outer.lnks.4_5:
+              {}
+            gripper.lft_outer.lnks.4_6:
+              {}
+            gripper.lft_outer.lnks.4_7:
+              {}
+            gripper.lft_outer.lnks.4_8:
+              {}
+            gripper.lft_outer.lnks.4_9:
+              {}
+            gripper.rgt_inner.lnks.1_0:
+              {}
+            gripper.rgt_inner.lnks.1_1:
+              {}
+            gripper.rgt_inner.lnks.1_10:
+              {}
+            gripper.rgt_inner.lnks.1_11:
+              {}
+            gripper.rgt_inner.lnks.1_2:
+              {}
+            gripper.rgt_inner.lnks.1_3:
+              {}
+            gripper.rgt_inner.lnks.1_4:
+              {}
+            gripper.rgt_inner.lnks.1_5:
+              {}
+            gripper.rgt_inner.lnks.1_6:
+              {}
+            gripper.rgt_inner.lnks.1_7:
+              {}
+            gripper.rgt_inner.lnks.1_8:
+              {}
+            gripper.rgt_inner.lnks.1_9:
+              {}
+            gripper.rgt_outer.lnks.1_0:
+              {}
+            gripper.rgt_outer.lnks.1_1:
+              {}
+            gripper.rgt_outer.lnks.1_10:
+              {}
+            gripper.rgt_outer.lnks.1_11:
+              {}
+            gripper.rgt_outer.lnks.1_2:
+              {}
+            gripper.rgt_outer.lnks.1_3:
+              {}
+            gripper.rgt_outer.lnks.1_4:
+              {}
+            gripper.rgt_outer.lnks.1_5:
+              {}
+            gripper.rgt_outer.lnks.1_6:
+              {}
+            gripper.rgt_outer.lnks.1_7:
+              {}
+            gripper.rgt_outer.lnks.1_8:
+              {}
+            gripper.rgt_outer.lnks.1_9:
+              {}
+            gripper.rgt_outer.lnks.2_0:
+              {}
+            gripper.rgt_outer.lnks.2_1:
+              {}
+            gripper.rgt_outer.lnks.2_10:
+              {}
+            gripper.rgt_outer.lnks.2_11:
+              {}
+            gripper.rgt_outer.lnks.2_2:
+              {}
+            gripper.rgt_outer.lnks.2_3:
+              {}
+            gripper.rgt_outer.lnks.2_4:
+              {}
+            gripper.rgt_outer.lnks.2_5:
+              {}
+            gripper.rgt_outer.lnks.2_6:
+              {}
+            gripper.rgt_outer.lnks.2_7:
+              {}
+            gripper.rgt_outer.lnks.2_8:
+              {}
+            gripper.rgt_outer.lnks.2_9:
+              {}
+            gripper.rgt_outer.lnks.3_0:
+              {}
+            gripper.rgt_outer.lnks.3_1:
+              {}
+            gripper.rgt_outer.lnks.3_10:
+              {}
+            gripper.rgt_outer.lnks.3_11:
+              {}
+            gripper.rgt_outer.lnks.3_2:
+              {}
+            gripper.rgt_outer.lnks.3_3:
+              {}
+            gripper.rgt_outer.lnks.3_4:
+              {}
+            gripper.rgt_outer.lnks.3_5:
+              {}
+            gripper.rgt_outer.lnks.3_6:
+              {}
+            gripper.rgt_outer.lnks.3_7:
+              {}
+            gripper.rgt_outer.lnks.3_8:
+              {}
+            gripper.rgt_outer.lnks.3_9:
+              {}
+            gripper.rgt_outer.lnks.4_0:
+              {}
+            gripper.rgt_outer.lnks.4_1:
+              {}
+            gripper.rgt_outer.lnks.4_10:
+              {}
+            gripper.rgt_outer.lnks.4_11:
+              {}
+            gripper.rgt_outer.lnks.4_2:
+              {}
+            gripper.rgt_outer.lnks.4_3:
+              {}
+            gripper.rgt_outer.lnks.4_4:
+              {}
+            gripper.rgt_outer.lnks.4_5:
+              {}
+            gripper.rgt_outer.lnks.4_6:
+              {}
+            gripper.rgt_outer.lnks.4_7:
+              {}
+            gripper.rgt_outer.lnks.4_8:
+              {}
+            gripper.rgt_outer.lnks.4_9:
+              {}
+            body_0:
+              {}
+            body_1:
+              {}
+            body_10:
+              {}
+            body_11:
+              {}
+            body_2:
+              {}
+            body_3:
+              {}
+            body_4:
+              {}
+            body_5:
+              {}
+            body_6:
+              {}
+            body_7:
+              {}
+            body_8:
+              {}
+            body_9:
+              {}
       Update Interval: 0
       Value: true
     - Class: rviz/MarkerArray
@@ -82,6 +610,138 @@ Visualization Manager:
       Marker Topic: /grasp_pub
       Name: MarkerArray
       Namespaces:
+        gripper.lft_inner.lnks.1_0: true
+        gripper.lft_inner.lnks.1_1: true
+        gripper.lft_inner.lnks.1_10: true
+        gripper.lft_inner.lnks.1_11: true
+        gripper.lft_inner.lnks.1_2: true
+        gripper.lft_inner.lnks.1_3: true
+        gripper.lft_inner.lnks.1_4: true
+        gripper.lft_inner.lnks.1_5: true
+        gripper.lft_inner.lnks.1_6: true
+        gripper.lft_inner.lnks.1_7: true
+        gripper.lft_inner.lnks.1_8: true
+        gripper.lft_inner.lnks.1_9: true
+        gripper.lft_outer.lnks.1_0: true
+        gripper.lft_outer.lnks.1_1: true
+        gripper.lft_outer.lnks.1_10: true
+        gripper.lft_outer.lnks.1_11: true
+        gripper.lft_outer.lnks.1_2: true
+        gripper.lft_outer.lnks.1_3: true
+        gripper.lft_outer.lnks.1_4: true
+        gripper.lft_outer.lnks.1_5: true
+        gripper.lft_outer.lnks.1_6: true
+        gripper.lft_outer.lnks.1_7: true
+        gripper.lft_outer.lnks.1_8: true
+        gripper.lft_outer.lnks.1_9: true
+        gripper.lft_outer.lnks.2_0: true
+        gripper.lft_outer.lnks.2_1: true
+        gripper.lft_outer.lnks.2_10: true
+        gripper.lft_outer.lnks.2_11: true
+        gripper.lft_outer.lnks.2_2: true
+        gripper.lft_outer.lnks.2_3: true
+        gripper.lft_outer.lnks.2_4: true
+        gripper.lft_outer.lnks.2_5: true
+        gripper.lft_outer.lnks.2_6: true
+        gripper.lft_outer.lnks.2_7: true
+        gripper.lft_outer.lnks.2_8: true
+        gripper.lft_outer.lnks.2_9: true
+        gripper.lft_outer.lnks.3_0: true
+        gripper.lft_outer.lnks.3_1: true
+        gripper.lft_outer.lnks.3_10: true
+        gripper.lft_outer.lnks.3_11: true
+        gripper.lft_outer.lnks.3_2: true
+        gripper.lft_outer.lnks.3_3: true
+        gripper.lft_outer.lnks.3_4: true
+        gripper.lft_outer.lnks.3_5: true
+        gripper.lft_outer.lnks.3_6: true
+        gripper.lft_outer.lnks.3_7: true
+        gripper.lft_outer.lnks.3_8: true
+        gripper.lft_outer.lnks.3_9: true
+        gripper.lft_outer.lnks.4_0: true
+        gripper.lft_outer.lnks.4_1: true
+        gripper.lft_outer.lnks.4_10: true
+        gripper.lft_outer.lnks.4_11: true
+        gripper.lft_outer.lnks.4_2: true
+        gripper.lft_outer.lnks.4_3: true
+        gripper.lft_outer.lnks.4_4: true
+        gripper.lft_outer.lnks.4_5: true
+        gripper.lft_outer.lnks.4_6: true
+        gripper.lft_outer.lnks.4_7: true
+        gripper.lft_outer.lnks.4_8: true
+        gripper.lft_outer.lnks.4_9: true
+        gripper.rgt_inner.lnks.1_0: true
+        gripper.rgt_inner.lnks.1_1: true
+        gripper.rgt_inner.lnks.1_10: true
+        gripper.rgt_inner.lnks.1_11: true
+        gripper.rgt_inner.lnks.1_2: true
+        gripper.rgt_inner.lnks.1_3: true
+        gripper.rgt_inner.lnks.1_4: true
+        gripper.rgt_inner.lnks.1_5: true
+        gripper.rgt_inner.lnks.1_6: true
+        gripper.rgt_inner.lnks.1_7: true
+        gripper.rgt_inner.lnks.1_8: true
+        gripper.rgt_inner.lnks.1_9: true
+        gripper.rgt_outer.lnks.1_0: true
+        gripper.rgt_outer.lnks.1_1: true
+        gripper.rgt_outer.lnks.1_10: true
+        gripper.rgt_outer.lnks.1_11: true
+        gripper.rgt_outer.lnks.1_2: true
+        gripper.rgt_outer.lnks.1_3: true
+        gripper.rgt_outer.lnks.1_4: true
+        gripper.rgt_outer.lnks.1_5: true
+        gripper.rgt_outer.lnks.1_6: true
+        gripper.rgt_outer.lnks.1_7: true
+        gripper.rgt_outer.lnks.1_8: true
+        gripper.rgt_outer.lnks.1_9: true
+        gripper.rgt_outer.lnks.2_0: true
+        gripper.rgt_outer.lnks.2_1: true
+        gripper.rgt_outer.lnks.2_10: true
+        gripper.rgt_outer.lnks.2_11: true
+        gripper.rgt_outer.lnks.2_2: true
+        gripper.rgt_outer.lnks.2_3: true
+        gripper.rgt_outer.lnks.2_4: true
+        gripper.rgt_outer.lnks.2_5: true
+        gripper.rgt_outer.lnks.2_6: true
+        gripper.rgt_outer.lnks.2_7: true
+        gripper.rgt_outer.lnks.2_8: true
+        gripper.rgt_outer.lnks.2_9: true
+        gripper.rgt_outer.lnks.3_0: true
+        gripper.rgt_outer.lnks.3_1: true
+        gripper.rgt_outer.lnks.3_10: true
+        gripper.rgt_outer.lnks.3_11: true
+        gripper.rgt_outer.lnks.3_2: true
+        gripper.rgt_outer.lnks.3_3: true
+        gripper.rgt_outer.lnks.3_4: true
+        gripper.rgt_outer.lnks.3_5: true
+        gripper.rgt_outer.lnks.3_6: true
+        gripper.rgt_outer.lnks.3_7: true
+        gripper.rgt_outer.lnks.3_8: true
+        gripper.rgt_outer.lnks.3_9: true
+        gripper.rgt_outer.lnks.4_0: true
+        gripper.rgt_outer.lnks.4_1: true
+        gripper.rgt_outer.lnks.4_10: true
+        gripper.rgt_outer.lnks.4_11: true
+        gripper.rgt_outer.lnks.4_2: true
+        gripper.rgt_outer.lnks.4_3: true
+        gripper.rgt_outer.lnks.4_4: true
+        gripper.rgt_outer.lnks.4_5: true
+        gripper.rgt_outer.lnks.4_6: true
+        gripper.rgt_outer.lnks.4_7: true
+        gripper.rgt_outer.lnks.4_8: true
+        gripper.rgt_outer.lnks.4_9: true
+        body_0: true
+        body_1: true
+        body_10: true
+        body_11: true
+        body_2: true
+        body_3: true
+        body_4: true
+        body_5: true
+        body_6: true
+        body_7: true
+        body_8: true
+        body_9: true
         object: true
       Queue Size: 100
       Value: true

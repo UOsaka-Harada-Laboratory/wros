@@ -15,7 +15,6 @@ import modeling.geometric_model as gm
 import modeling.collision_model as cm
 import visualization.panda.world as wd
 import grasping.planning.antipodal as gpa
-import robot_sim.end_effectors.gripper.robotiqhe.robotiqhe as he
 
 
 def rotmat2q(rot):
@@ -55,7 +54,7 @@ def update_tfs(pose_dict):
             br.sendTransform(t)
 
 
-def gen_marker(frame_name, name, id_int, pose, stl_path):
+def gen_marker(frame_name, name, id_int, pose, stl_path, scale=[1., 1., 1.]):
     """ Generates a marker.
 
         Attributes:
@@ -74,14 +73,14 @@ def gen_marker(frame_name, name, id_int, pose, stl_path):
     marker.type = marker.MESH_RESOURCE
     marker.action = marker.ADD
     marker.pose = pose
-    marker.scale.x = 1.0
-    marker.scale.y = 1.0
-    marker.scale.z = 1.0
+    marker.scale.x = scale[0]
+    marker.scale.y = scale[1]
+    marker.scale.z = scale[2]
     marker.color.a = 0.0
     marker.color.r = 0.0
     marker.color.g = 0.0
     marker.color.b = 0.0
-    marker.mesh_resource = 'package://' + os.path.join(pkg_name, stl_path)
+    marker.mesh_resource = 'file://' + os.path.join(pkg_name, stl_path)
     marker.mesh_use_embedded_materials = True
 
     return marker
@@ -95,7 +94,7 @@ def plan_grasps(req):
         grasp_target,
         angle_between_contact_normals=math.radians(90),
         openning_direction='loc_x',
-        max_samples=4,
+        max_samples=1,
         min_dist_between_sampled_contact_points=.016,
         contact_offset=.016)
 
@@ -104,6 +103,7 @@ def plan_grasps(req):
         gripper.grip_at_with_jcpose(jaw_pos, jaw_rotmat, jaw_width)
         gripper.gen_meshmodel().attach_to(base)
 
+        parent_frame = 'object'
         pose_b = Pose()
         pose_b.position.x = hnd_pos[0]
         pose_b.position.y = hnd_pos[1]
@@ -113,53 +113,40 @@ def plan_grasps(req):
         pose_b.orientation.y = q[1]
         pose_b.orientation.z = q[2]
         pose_b.orientation.w = q[3]
-        parent_frame = 'object'
         markers.markers.append(
             gen_marker(
                 parent_frame,
-                'hande_b_'+str(i),
+                'body_'+str(i),
                 0,
                 pose_b,
-                gripper_stl_path))
-        pose_dict['hande_b_'+str(i)] = \
+                body_stl_path))
+        pose_dict['body_'+str(i)] = \
             {'parent': parent_frame, 'pose': pose_b}
         update_tfs(pose_dict)
 
-        parent_frame = 'hande_b_'+str(i)
-        pose_f1 = Pose()
-        pose_f1.position.x = -0.025
-        pose_f1.position.y = 0.0
-        pose_f1.position.z = 0.11
-        pose_f1.orientation.x = 0.
-        pose_f1.orientation.y = 0.
-        pose_f1.orientation.z = 0.
-        pose_f1.orientation.w = 1.
-        markers.markers.append(
-            gen_marker(
-                parent_frame,
-                'hande_f1_'+str(i),
-                0,
-                pose_f1,
-                finger1_stl_path))
-        pose_f2 = Pose()
-        pose_f2.position.x = 0.025
-        pose_f2.position.y = 0.0
-        pose_f2.position.z = 0.11
-        pose_f2.orientation.x = 0.
-        pose_f2.orientation.y = 0.
-        pose_f2.orientation.z = 0.
-        pose_f2.orientation.w = 1.
-        markers.markers.append(
-            gen_marker(
-                parent_frame,
-                'hande_f2_'+str(i),
-                0,
-                pose_f2,
-                finger2_stl_path))
-        pose_dict['hande_f1_'+str(i)] = \
-            {'parent': parent_frame, 'pose': pose_f1}
-        pose_dict['hande_f2_'+str(i)] = \
-            {'parent': parent_frame, 'pose': pose_f2}
+        for k, v in fingers_dict.items():
+            pose = Pose()
+            pose.position.x = v['gl_pos'][0]
+            pose.position.y = v['gl_pos'][1]
+            pose.position.z = v['gl_pos'][2]
+            q = rotmat2q(v['gl_rotmat'])
+            pose.orientation.x = q[0]
+            pose.orientation.y = q[1]
+            pose.orientation.z = q[2]
+            pose.orientation.w = q[3]
+            scale = [1., 1., 1.]
+            if v['scale'] is not None:
+                scale = v['scale']
+            markers.markers.append(
+                gen_marker(
+                    parent_frame,
+                    k+'_'+str(i),
+                    0,
+                    pose,
+                    v['mesh_file'],
+                    scale))
+            pose_dict[k+'_'+str(i)] = \
+                {'parent': parent_frame, 'pose': pose}
 
     return EmptyResponse()
 
@@ -171,19 +158,56 @@ if __name__ == '__main__':
 
     base = wd.World(cam_pos=[1, 1, 1], lookat_pos=[0, 0, 0])
     base.taskMgr.step()
-    gripper_stl_path = rospy.get_param("~hande_b_mesh_path")
-    finger1_stl_path = rospy.get_param("~hande_f1_mesh_path")
-    finger2_stl_path = rospy.get_param("~hande_f2_mesh_path")
-    gripper = he.RobotiqHE()
+
+    gripper_name = rospy.get_param("~gripper_name")
+    if gripper_name == "robotiqhe":
+        import robot_sim.end_effectors.gripper.robotiqhe.robotiqhe as gr
+        gripper = gr.RobotiqHE()
+        body_stl_path = gripper.lft.lnks[0]['mesh_file']
+        fingers_dict = {
+            'gripper.lft.lnks.1': gripper.lft.lnks[1],
+            'gripper.rgt.lnks.1': gripper.rgt.lnks[1]}
+    elif gripper_name == "robotiq85":
+        import robot_sim.end_effectors.gripper.robotiq85.robotiq85 as gr
+        gripper = gr.Robotiq85()
+        body_stl_path = gripper.lft_outer.lnks[0]['mesh_file']
+        fingers_dict = {
+            'gripper.lft_outer.lnks.1': gripper.lft_outer.lnks[1],
+            'gripper.rgt_outer.lnks.1': gripper.rgt_outer.lnks[1],
+            'gripper.lft_outer.lnks.2': gripper.lft_outer.lnks[2],
+            'gripper.rgt_outer.lnks.2': gripper.rgt_outer.lnks[2],
+            'gripper.lft_outer.lnks.3': gripper.lft_outer.lnks[3],
+            'gripper.rgt_outer.lnks.3': gripper.rgt_outer.lnks[3],
+            'gripper.lft_outer.lnks.4': gripper.lft_outer.lnks[4],
+            'gripper.rgt_outer.lnks.4': gripper.rgt_outer.lnks[4],
+            'gripper.lft_inner.lnks.1': gripper.lft_inner.lnks[1],
+            'gripper.rgt_inner.lnks.1': gripper.rgt_inner.lnks[1]}
+    elif gripper_name == "robotiq140":
+        import robot_sim.end_effectors.gripper.robotiq140.robotiq140 as gr
+        gripper = gr.Robotiq140()
+        body_stl_path = gripper.lft_outer.lnks[0]['mesh_file']
+        fingers_dict = {
+            'gripper.lft_outer.lnks.1': gripper.lft_outer.lnks[1],
+            'gripper.rgt_outer.lnks.1': gripper.rgt_outer.lnks[1],
+            'gripper.lft_outer.lnks.2': gripper.lft_outer.lnks[2],
+            'gripper.rgt_outer.lnks.2': gripper.rgt_outer.lnks[2],
+            'gripper.lft_outer.lnks.3': gripper.lft_outer.lnks[3],
+            'gripper.rgt_outer.lnks.3': gripper.rgt_outer.lnks[3],
+            'gripper.lft_outer.lnks.4': gripper.lft_outer.lnks[4],
+            'gripper.rgt_outer.lnks.4': gripper.rgt_outer.lnks[4],
+            'gripper.lft_inner.lnks.1': gripper.lft_inner.lnks[1],
+            'gripper.rgt_inner.lnks.1': gripper.rgt_inner.lnks[1]}
+    else:
+        rospy.logerr("The specified gripper is not implemented.")
     gm.gen_frame().attach_to(base)
     base.taskMgr.step()
+
     object_stl_path = rospy.get_param("~object_mesh_path")
     grasp_target = cm.CollisionModel(
         os.path.join(pkg_path, object_stl_path))
     grasp_target.set_rgba([.9, .75, .35, .3])
     grasp_target.attach_to(base)
     base.taskMgr.step()
-
     markers = MarkerArray()
     pose = Pose()
     pose.position.x = 0.
@@ -194,7 +218,12 @@ if __name__ == '__main__':
     pose.orientation.z = 0.
     pose.orientation.w = 1.
     markers.markers.append(
-        gen_marker('base_link', 'object', 0, pose, object_stl_path))
+        gen_marker(
+            'base_link',
+            'object',
+            0,
+            pose,
+            object_stl_path))
 
     pose_dict = {}
     br = tf2_ros.StaticTransformBroadcaster()

@@ -35,11 +35,28 @@ docker compose up
 xhost +
 docker exec -it wros_noetic_container bash
 byobu
-roslaunch wros_tutorials plan_grasp.launch
-rosservice call /plan_grasp
 ```
 
-<img src=image/plan_grasp.gif width=720>  
+## Robotiq Hand-E
+```bash
+roslaunch wros_tutorials plan_grasp.launch gripper_name:=robotiqhe
+rosservice call /plan_grasp
+```
+<img src=image/robotiqhe.gif width=720>  
+
+## Robotiq 2F-85
+```bash
+roslaunch wros_tutorials plan_grasp.launch gripper_name:=robotiq85
+rosservice call /plan_grasp
+```
+<img src=image/robotiq85.gif width=720>  
+
+## Robotiq 2F-140
+```bash
+roslaunch wros_tutorials plan_grasp.launch gripper_name:=robotiq140
+rosservice call /plan_grasp
+```
+<img src=image/robotiq140.gif width=720>  
 
 # Contributors
 
