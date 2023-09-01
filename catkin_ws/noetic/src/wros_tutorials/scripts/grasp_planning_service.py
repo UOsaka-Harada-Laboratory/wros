@@ -80,7 +80,7 @@ def gen_marker(frame_name, name, id_int, pose, stl_path, scale=[1., 1., 1.]):
     marker.color.r = 0.0
     marker.color.g = 0.0
     marker.color.b = 0.0
-    marker.mesh_resource = 'file://' + os.path.join(pkg_name, stl_path)
+    marker.mesh_resource = 'file://' + stl_path
     marker.mesh_use_embedded_materials = True
 
     return marker
@@ -94,7 +94,7 @@ def plan_grasps(req):
         grasp_target,
         angle_between_contact_normals=math.radians(90),
         openning_direction='loc_x',
-        max_samples=1,
+        max_samples=4,
         min_dist_between_sampled_contact_points=.016,
         contact_offset=.016)
 
@@ -203,8 +203,7 @@ if __name__ == '__main__':
     base.taskMgr.step()
 
     object_stl_path = rospy.get_param("~object_mesh_path")
-    grasp_target = cm.CollisionModel(
-        os.path.join(pkg_path, object_stl_path))
+    grasp_target = cm.CollisionModel(object_stl_path)
     grasp_target.set_rgba([.9, .75, .35, .3])
     grasp_target.attach_to(base)
     base.taskMgr.step()
