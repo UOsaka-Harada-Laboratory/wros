@@ -20,7 +20,6 @@ services:
             - /tmp/.X11-unix:/tmp/.X11-unix:rw
             # ros catkin dir
             - ./catkin_ws/noetic/src/wros_tutorials:/catkin_ws/src/wros_tutorials
-            - ./catkin_ws/noetic/src/wros_tutorials/modules/wrs:/catkin_ws/src/wros_tutorials/modules/wrs
         privileged: true
         tty: true
         network_mode: host

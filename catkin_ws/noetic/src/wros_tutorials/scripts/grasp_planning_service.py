@@ -3,6 +3,7 @@
 import os
 import math
 import numpy as np
+from panda3d.core import *
 from transforms3d.quaternions import mat2quat
 
 import rospy
@@ -17,15 +18,25 @@ import modeling.collision_model as cm
 import visualization.panda.world as wd
 import grasping.planning.antipodal as gpa
 
+import pyhiro.freesuc as fs
+import pyhiro.pandactrl as pc
+import pyhiro.pandageom as pg
+
 
 class GraspPlanner():
 
     def __init__(self):
-        rospy.init_node('grasp_planning_server')
-        self.base = wd.World(cam_pos=[1, 1, 1], lookat_pos=[0, 0, 0])
+        gripper_name = rospy.get_param("~gripper_name")
+
+        if gripper_name in ['robotiqhe', 'robotiq85', 'robotiq140']:
+            self.base = wd.World(cam_pos=[1, 1, 1], lookat_pos=[0, 0, 0])
+        elif gripper_name in ['suction', 'sgb30']:
+            self.base = pc.World(camp=[500, 500, 500], lookatp=[0, 0, 0])
+        else:
+            rospy.logerr("The specified gripper is not implemented.")
         self.base.taskMgr.step()
 
-        gripper_name = rospy.get_param("~gripper_name")
+
         if gripper_name == "robotiqhe":
             import robot_sim.end_effectors.gripper.robotiqhe.robotiqhe as gr
             self.gripper = gr.RobotiqHE()
@@ -63,6 +74,14 @@ class GraspPlanner():
                 'gripper.rgt_outer.lnks.4': self.gripper.rgt_outer.lnks[4],
                 'gripper.lft_inner.lnks.1': self.gripper.lft_inner.lnks[1],
                 'gripper.rgt_inner.lnks.1': self.gripper.rgt_inner.lnks[1]}
+        elif gripper_name == "suction":
+            import robot_sim.end_effectors.single_contact.suction.sandmmbs.sdmbs as gr  # noqa
+            self.gripper = gr
+            self.body_stl_path = str(self.gripper.Sdmbs().mbs_stlpath)
+        elif gripper_name == "sgb30":
+            import robot_sim.end_effectors.single_contact.suction.sgb30.sgb30 as gr  # noqa
+            self.gripper = gr
+            self.body_stl_path = str(self.gripper.SGB30().sgb_stlpath)
         else:
             rospy.logerr("The specified gripper is not implemented.")
         gm.gen_frame().attach_to(self.base)
@@ -82,18 +101,33 @@ class GraspPlanner():
         pose.orientation.y = 0.
         pose.orientation.z = 0.
         pose.orientation.w = 1.
+        scale = [1., 1., 1.]
+        if gripper_name in ['robotiqhe', 'robotiq85', 'robotiq140']:
+            pass
+        elif gripper_name in ['suction', 'sgb30']:
+            scale = [0.001, 0.001, 0.001]
+        else:
+            rospy.logerr("The specified gripper is not implemented.")
         self.markers.markers.append(
             self.gen_marker(
                 'base_link',
                 'object',
                 0,
                 pose,
-                self.object_stl_path))
+                self.object_stl_path,
+                scale=scale,
+                color=[1.0, 0.5, 0.5, 0.5]))
 
         self.pose_dict = {}
         self.br = tf2_ros.StaticTransformBroadcaster()
-        self.planning_service = rospy.Service(
-            'plan_grasp', Empty, self.plan_grasps)
+        if gripper_name in ['robotiqhe', 'robotiq85', 'robotiq140']:
+            self.planning_service = rospy.Service(
+                'plan_grasp', Empty, self.plan_grasps)
+        elif gripper_name in ['suction', 'sgb30']:
+            self.planning_service = rospy.Service(
+                'plan_grasp', Empty, self.plan_contacts)
+        else:
+            rospy.logerr("The specified gripper is not implemented.")
         self.marker_pub = rospy.Publisher(
             'grasp_pub', MarkerArray, queue_size=1)
 
@@ -126,7 +160,8 @@ class GraspPlanner():
             id_int,
             pose,
             stl_path,
-            scale=[1., 1., 1.]):
+            scale=[1., 1., 1.],
+            color=[0., 0., 0., 0.]):
         """ Generates a marker.
 
             Attributes:
@@ -148,14 +183,74 @@ class GraspPlanner():
         marker.scale.x = float(scale[0])
         marker.scale.y = float(scale[1])
         marker.scale.z = float(scale[2])
-        marker.color.a = 0.0
-        marker.color.r = 0.0
-        marker.color.g = 0.0
-        marker.color.b = 0.0
+        marker.color.a = float(color[0])
+        marker.color.r = float(color[1])
+        marker.color.g = float(color[2])
+        marker.color.b = float(color[3])
         marker.mesh_resource = 'file://' + stl_path
         marker.mesh_use_embedded_materials = True
 
         return marker
+
+    def plan_contacts(self, req):
+        """ Plans contacts. """
+
+        contact_planner = fs.Freesuc(
+            self.object_stl_path,
+            handpkg=self.gripper,
+            torqueresist=100)
+        contact_planner.removeBadSamples(mindist=0.1)
+        contact_planner.clusterFacetSamplesRNN(reduceRadius=100)
+        pg.plotAxisSelf(self.base.render, Vec3(0, 0, 0))
+        contact_planner.removeHndcc(self.base)
+        objnp = pg.packpandanp(
+            contact_planner.objtrimesh.vertices,
+            contact_planner.objtrimesh.face_normals,
+            contact_planner.objtrimesh.faces,
+            name='')
+        objnp.setColor(.37, .37, .35, 1)
+        objnp.reparentTo(self.base.render)
+
+        rospy.loginfo(
+            "Number of generated grasps: %s",
+            len(contact_planner.sucrotmats))
+        contact_result = []
+        parent_frame = 'object'
+        for i, hndrot in enumerate(contact_planner.sucrotmats):
+            if i >= 1:
+                tmphand = self.gripper.newHandNM(hndcolor=[.7, .7, .7, .7])
+                centeredrot = Mat4(hndrot)
+                tmphand.setMat(centeredrot)
+                tmphand.reparentTo(self.base.render)
+                tmphand.setColor(.5, .5, .5, .3)
+                contact_pos = [tmphand.getPos()[i] / 1000 for i in range(3)]
+                mat = tmphand.getMat()
+                contact_mat = \
+                    [list([mat[i][0], mat[i][1], mat[i][2]]) for i in range(3)]
+
+                pose_b = Pose()
+                pose_b.position.x = contact_pos[0]
+                pose_b.position.y = contact_pos[1]
+                pose_b.position.z = contact_pos[2]
+                q = mat2quat(np.array(contact_mat).T)
+                pose_b.orientation.x = q[1]
+                pose_b.orientation.y = q[2]
+                pose_b.orientation.z = q[3]
+                pose_b.orientation.w = q[0]
+                self.markers.markers.append(
+                    self.gen_marker(
+                        parent_frame,
+                        'body_'+str(i),
+                        0,
+                        pose_b,
+                        self.body_stl_path,
+                        scale=[0.001, 0.001, 0.001],
+                        color=[0.2, 0.8, 0.8, 0.8]))
+                self.pose_dict['body_'+str(i)] = \
+                    {'parent': parent_frame, 'pose': pose_b}
+                self.update_tfs()
+
+        return EmptyResponse()
 
     def plan_grasps(self, req):
         """ Plans grasps. """
@@ -168,6 +263,7 @@ class GraspPlanner():
             max_samples=4,
             min_dist_between_sampled_contact_points=.016,
             contact_offset=.016)
+        rospy.loginfo("Number of generated grasps: %s", len(grasp_info_list))
 
         for i, grasp_info in enumerate(grasp_info_list):
             jaw_width, jaw_pos, jaw_rotmat, hnd_pos, hnd_rotmat = grasp_info
@@ -223,6 +319,7 @@ class GraspPlanner():
 
 
 if __name__ == '__main__':
+    rospy.init_node('grasp_planning_server')
     planner = GraspPlanner()
     rate = rospy.Rate(1)
     while not rospy.is_shutdown():

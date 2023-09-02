@@ -39,27 +39,40 @@ byobu
 
 ## Robotiq Hand-E
 ```bash
-roslaunch wros_tutorials plan_grasp.launch gripper_name:=robotiqhe
+roslaunch wros_tutorials plan_grasp.launch gripper_name:=robotiqhe object_mesh_path:=/catkin_ws/src/wros_tutorials/wrs/0000_examples/objects/tubebig.stl
 rosservice call /plan_grasp
 ```
 <img src=image/robotiqhe.gif width=720>  
 
 ## Robotiq 2F-85
 ```bash
-roslaunch wros_tutorials plan_grasp.launch gripper_name:=robotiq85
+roslaunch wros_tutorials plan_grasp.launch gripper_name:=robotiq85 object_mesh_path:=/catkin_ws/src/wros_tutorials/wrs/0000_examples/objects/bunnysim.stl
 rosservice call /plan_grasp
 ```
 <img src=image/robotiq85.gif width=720>  
 
 ## Robotiq 2F-140
 ```bash
-roslaunch wros_tutorials plan_grasp.launch gripper_name:=robotiq140
+roslaunch wros_tutorials plan_grasp.launch gripper_name:=robotiq140 object_mesh_path:=/catkin_ws/src/wros_tutorials/wrs/0000_examples/objects/milkcarton.stl
 rosservice call /plan_grasp
 ```
 <img src=image/robotiq140.gif width=720>  
 
-# Contributors
+## Suction gripper
+```bash
+roslaunch wros_tutorials plan_grasp.launch gripper_name:=suction object_mesh_path:=/catkin_ws/src/wros_tutorials/wrs/pyhiro/suction/objects/sandpart2.stl
+rosservice call /plan_grasp
+```
+<img src=image/suction.gif width=720>  
 
+## CONVUM baroon hand SGB30
+```bash
+roslaunch wros_tutorials plan_grasp.launch gripper_name:=sgb30 object_mesh_path:=/catkin_ws/src/wros_tutorials/wrs/pyhiro/suction/objects/ttube.stl
+rosservice call /plan_grasp
+```
+<img src=image/sgb30.gif width=720>  
+
+# Contributors
 
 
 # Author

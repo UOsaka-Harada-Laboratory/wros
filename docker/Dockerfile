@@ -48,6 +48,8 @@ RUN pip install -r /tmp/requirements.txt
 WORKDIR /catkin_ws/src/
 RUN echo "catkin build -DPYTHON_EXECUTABLE=/usr/bin/python3" >> ~/.bash_history
 RUN echo "rosservice call /plan_grasp" >> ~/.bash_history
-RUN echo "roslaunch wros_tutorials plan_grasp.launch gripper_name:=robotiq140" >> ~/.bash_history
-RUN echo "roslaunch wros_tutorials plan_grasp.launch gripper_name:=robotiq85" >> ~/.bash_history
-RUN echo "roslaunch wros_tutorials plan_grasp.launch gripper_name:=robotiqhe" >> ~/.bash_history
+RUN echo "roslaunch wros_tutorials plan_grasp.launch gripper_name:=sgb30 object_mesh_path:=/catkin_ws/src/wros_tutorials/wrs/pyhiro/suction/objects/ttube.stl" >> ~/.bash_history
+RUN echo "roslaunch wros_tutorials plan_grasp.launch gripper_name:=suction object_mesh_path:=/catkin_ws/src/wros_tutorials/wrs/pyhiro/suction/objects/sandpart2.stl" >> ~/.bash_history
+RUN echo "roslaunch wros_tutorials plan_grasp.launch gripper_name:=robotiq140 object_mesh_path:=/catkin_ws/src/wros_tutorials/wrs/0000_examples/objects/milkcarton.stl" >> ~/.bash_history
+RUN echo "roslaunch wros_tutorials plan_grasp.launch gripper_name:=robotiq85 object_mesh_path:=/catkin_ws/src/wros_tutorials/wrs/0000_examples/objects/bunnysim.stl" >> ~/.bash_history
+RUN echo "roslaunch wros_tutorials plan_grasp.launch gripper_name:=robotiqhe object_mesh_path:=/catkin_ws/src/wros_tutorials/wrs/0000_examples/objects/tubebig.stl" >> ~/.bash_history

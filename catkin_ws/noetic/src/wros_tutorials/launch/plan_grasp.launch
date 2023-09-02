@@ -1,6 +1,6 @@
 <launch>
   <arg name="pkg_name" default="wros_tutorials"/>
-  <arg name="object_mesh_path" default="/catkin_ws/src/wros_tutorials/modules/wrs/0000_examples/objects/tubebig.stl"/>
+  <arg name="object_mesh_path" default=""/>
   <arg name="gripper_name" default="robotiqhe"/>
 
   <!-- tf generated using markers -->
