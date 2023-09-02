@@ -36,7 +36,6 @@ class GraspPlanner():
             rospy.logerr("The specified gripper is not implemented.")
         self.base.taskMgr.step()
 
-
         if gripper_name == "robotiqhe":
             import robot_sim.end_effectors.gripper.robotiqhe.robotiqhe as gr
             self.gripper = gr.RobotiqHE()
