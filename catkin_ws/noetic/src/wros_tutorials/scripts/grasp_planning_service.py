@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 
-import os
 import math
 import numpy as np
 from panda3d.core import *
 from transforms3d.quaternions import mat2quat
 
 import rospy
-import rospkg
 import tf2_ros
 from std_srvs.srv import Empty, EmptyResponse
 from geometry_msgs.msg import Pose, TransformStamped
@@ -24,6 +22,7 @@ import pyhiro.pandageom as pg
 
 
 class GraspPlanner():
+    """ Grasp planner class. """
 
     def __init__(self):
         gripper_name = rospy.get_param("~gripper_name")
@@ -131,11 +130,7 @@ class GraspPlanner():
             'grasp_pub', MarkerArray, queue_size=1)
 
     def update_tfs(self):
-        """ Sends tfs.
-
-            Attributes:
-                pose_dict: dict{name(str): pose(geometry_msgs/Pose)}
-        """
+        """ Sends tfs. """
 
         if self.pose_dict is not {}:
             for name, data in self.pose_dict.items():
@@ -169,6 +164,8 @@ class GraspPlanner():
                 id_int (int): Unique id number
                 pose (geometry_msgs/Pose): Pose of the marker
                 stl_path (str): Stl file path
+                scale (list(float)): Object scale to be displayed
+                color (list(float)): Object color to be displayed
         """
 
         marker = Marker()
