@@ -13,3 +13,4 @@ networkx>=2.5.1 # vital
 pyserial>=3.4 # required by xarm controllers
 pandas>=1.3.4 # required for neuro ik
 matplotlib>=3.3 # 2D graph
+transforms3d

@@ -6,7 +6,6 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   std_srvs
   geometry_msgs
-  tf
   tf2_ros
 )
 
@@ -18,7 +17,6 @@ catkin_package(
     std_msgs
     std_srvs
     geometry_msgs
-    tf
     tf2_ros
 )
 

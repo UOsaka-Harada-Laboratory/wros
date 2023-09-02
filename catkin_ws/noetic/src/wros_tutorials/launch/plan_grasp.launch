@@ -9,8 +9,7 @@
   <node pkg="rviz" type="rviz" name="rviz" args="-d $(find wros_tutorials)/config/grasps.rviz"/>
 
   <!-- grasp planning service example node -->
-  <node pkg="$(arg pkg_name)" name="grasp_planning_service" type="grasp_planning_service.py" respawn="true" output="screen" >
-    <param name="pkg_name" type='str' value="$(arg pkg_name)" />
+  <node pkg="$(arg pkg_name)" name="grasp_planning_server" type="grasp_planning_service.py" respawn="true" output="screen" >
     <param name="object_mesh_path" type='str' value="$(arg object_mesh_path)" />
     <param name="gripper_name" type='str' value="$(arg gripper_name)" />
   </node>

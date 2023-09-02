@@ -46,7 +46,8 @@ RUN pip install -r /tmp/requirements.txt
 
 # Generates bash commands
 WORKDIR /catkin_ws/src/
-RUN echo "roslaunch wros_tutorials plan_grasp.launch gripper_name:=robotiqhe" >> ~/.bash_history
-RUN echo "roslaunch wros_tutorials plan_grasp.launch gripper_name:=robotiq85" >> ~/.bash_history
-RUN echo "roslaunch wros_tutorials plan_grasp.launch gripper_name:=robotiq140" >> ~/.bash_history
+RUN echo "catkin build -DPYTHON_EXECUTABLE=/usr/bin/python3" >> ~/.bash_history
 RUN echo "rosservice call /plan_grasp" >> ~/.bash_history
+RUN echo "roslaunch wros_tutorials plan_grasp.launch gripper_name:=robotiq140" >> ~/.bash_history
+RUN echo "roslaunch wros_tutorials plan_grasp.launch gripper_name:=robotiq85" >> ~/.bash_history
+RUN echo "roslaunch wros_tutorials plan_grasp.launch gripper_name:=robotiqhe" >> ~/.bash_history
