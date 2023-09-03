@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 
-import math
 import numpy as np
 from panda3d.core import Vec3, Mat4
 from transforms3d.quaternions import mat2quat
 
 import rospy
 import tf2_ros
+import rosparam
 from std_srvs.srv import Empty, EmptyResponse
 from geometry_msgs.msg import Pose, TransformStamped
 from visualization_msgs.msg import Marker, MarkerArray
@@ -25,24 +25,50 @@ class GraspPlanner():
     """ Grasp planner class. """
 
     def __init__(self):
-        gripper_name = rospy.get_param("~gripper_name")
 
+        gripper_name = rospy.get_param('~gripper_name', 'robotiqhe')
         if gripper_name in ['robotiqhe', 'robotiq85', 'robotiq140']:
             self.base = wd.World(cam_pos=[1, 1, 1], lookat_pos=[0, 0, 0])
+
+            self.angle_between_contact_normals = \
+                rospy.get_param(
+                    '~antipodal_grasp/angle_between_contact_normals', 90)
+            self.openning_direction = \
+                rospy.get_param(
+                    '~antipodal_grasp/openning_direction', 'loc_x')
+            self.max_samples = \
+                rospy.get_param(
+                    '~antipodal_grasp/max_samples', 4)
+            self.min_dist_between_sampled_contact_points = \
+                rospy.get_param(
+                    '~antipodal_grasp/min_dist_between_sampled_contact_points', .016)
+            self.contact_offset = \
+                rospy.get_param(
+                    '~antipodal_grasp/contact_offset', .016)
         elif gripper_name in ['suction', 'sgb30']:
             self.base = pc.World(camp=[500, 500, 500], lookatp=[0, 0, 0])
+
+            self.torque_resistance = \
+                rospy.get_param(
+                    '~contact/torque_resistance', 100)
+            self.min_distance = \
+                rospy.get_param(
+                    '~contact/min_distance', .1)
+            self.reduce_radius = \
+                rospy.get_param(
+                    '~contact/reduce_radius', 100)
         else:
             rospy.logerr("The specified gripper is not implemented.")
         self.base.taskMgr.step()
 
-        if gripper_name == "robotiqhe":
+        if gripper_name == 'robotiqhe':
             import robot_sim.end_effectors.gripper.robotiqhe.robotiqhe as gr
             self.gripper = gr.RobotiqHE()
             self.body_stl_path = self.gripper.lft.lnks[0]['mesh_file']
             self.fingers_dict = {
                 'gripper.lft.lnks.1': self.gripper.lft.lnks[1],
                 'gripper.rgt.lnks.1': self.gripper.rgt.lnks[1]}
-        elif gripper_name == "robotiq85":
+        elif gripper_name == 'robotiq85':
             import robot_sim.end_effectors.gripper.robotiq85.robotiq85 as gr
             self.gripper = gr.Robotiq85()
             self.body_stl_path = self.gripper.lft_outer.lnks[0]['mesh_file']
@@ -57,7 +83,7 @@ class GraspPlanner():
                 'gripper.rgt_outer.lnks.4': self.gripper.rgt_outer.lnks[4],
                 'gripper.lft_inner.lnks.1': self.gripper.lft_inner.lnks[1],
                 'gripper.rgt_inner.lnks.1': self.gripper.rgt_inner.lnks[1]}
-        elif gripper_name == "robotiq140":
+        elif gripper_name == 'robotiq140':
             import robot_sim.end_effectors.gripper.robotiq140.robotiq140 as gr
             self.gripper = gr.Robotiq140()
             self.body_stl_path = self.gripper.lft_outer.lnks[0]['mesh_file']
@@ -72,11 +98,11 @@ class GraspPlanner():
                 'gripper.rgt_outer.lnks.4': self.gripper.rgt_outer.lnks[4],
                 'gripper.lft_inner.lnks.1': self.gripper.lft_inner.lnks[1],
                 'gripper.rgt_inner.lnks.1': self.gripper.rgt_inner.lnks[1]}
-        elif gripper_name == "suction":
+        elif gripper_name == 'suction':
             import robot_sim.end_effectors.single_contact.suction.sandmmbs.sdmbs as gr  # noqa
             self.gripper = gr
             self.body_stl_path = str(self.gripper.Sdmbs().mbs_stlpath)
-        elif gripper_name == "sgb30":
+        elif gripper_name == 'sgb30':
             import robot_sim.end_effectors.single_contact.suction.sgb30.sgb30 as gr  # noqa
             self.gripper = gr
             self.body_stl_path = str(self.gripper.SGB30().sgb_stlpath)
@@ -85,7 +111,9 @@ class GraspPlanner():
         gm.gen_frame().attach_to(self.base)
         self.base.taskMgr.step()
 
-        self.object_stl_path = rospy.get_param("~object_mesh_path")
+        self.object_stl_path = rospy.get_param(
+            '~object_mesh_path',
+            '/ros2_ws/src/wrs/0000_examples/objects/tubebig.stl')
         self.grasp_target = cm.CollisionModel(self.object_stl_path)
         self.grasp_target.set_rgba([.9, .75, .35, .3])
         self.grasp_target.attach_to(self.base)
@@ -194,9 +222,11 @@ class GraspPlanner():
         contact_planner = fs.Freesuc(
             self.object_stl_path,
             handpkg=self.gripper,
-            torqueresist=100)
-        contact_planner.removeBadSamples(mindist=0.1)
-        contact_planner.clusterFacetSamplesRNN(reduceRadius=100)
+            torqueresist=self.torque_resistance)
+        contact_planner.removeBadSamples(
+            mindist=self.min_distance)
+        contact_planner.clusterFacetSamplesRNN(
+            reduceRadius=self.reduce_radius)
         pg.plotAxisSelf(self.base.render, Vec3(0, 0, 0))
         contact_planner.removeHndcc(self.base)
         objnp = pg.packpandanp(
@@ -206,10 +236,10 @@ class GraspPlanner():
             name='')
         objnp.setColor(.37, .37, .35, 1)
         objnp.reparentTo(self.base.render)
-
         rospy.loginfo(
             "Number of generated grasps: %s",
             len(contact_planner.sucrotmats))
+
         contact_result = []
         parent_frame = 'object'
         for i, hndrot in enumerate(contact_planner.sucrotmats):
@@ -254,12 +284,19 @@ class GraspPlanner():
         grasp_info_list = gpa.plan_grasps(
             self.gripper,
             self.grasp_target,
-            angle_between_contact_normals=math.radians(90),
-            openning_direction='loc_x',
-            max_samples=4,
-            min_dist_between_sampled_contact_points=.016,
-            contact_offset=.016)
-        rospy.loginfo("Number of generated grasps: %s", len(grasp_info_list))
+            angle_between_contact_normals=\
+                np.radians(self.angle_between_contact_normals),
+            openning_direction=\
+                self.openning_direction,
+            max_samples=\
+                self.max_samples,
+            min_dist_between_sampled_contact_points=\
+                self.min_dist_between_sampled_contact_points,
+            contact_offset=\
+                self.contact_offset)
+        rospy.loginfo(
+            "Number of generated grasps: %s",
+            len(grasp_info_list))
 
         for i, grasp_info in enumerate(grasp_info_list):
             jaw_width, jaw_pos, jaw_rotmat, hnd_pos, hnd_rotmat = grasp_info

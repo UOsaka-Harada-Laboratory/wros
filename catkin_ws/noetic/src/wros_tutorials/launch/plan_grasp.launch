@@ -1,16 +1,11 @@
 <launch>
-  <arg name="pkg_name" default="wros_tutorials"/>
-  <arg name="object_mesh_path" default="/catkin_ws/src/wros_tutorials/wrs/0000_examples/objects/tubebig.stl"/>
-  <arg name="gripper_name" default="robotiqhe"/>
-
   <!-- tf generated using markers -->
   <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_broadcaster" args="0. 0. 0. 0. 0. 0. 1. world base_link"/>
   <node pkg="tf2_ros" type="static_transform_publisher" name="object_broadcaster" args="0. 0. 0. 0. 0. 0. 1. world object"/>
   <node pkg="rviz" type="rviz" name="rviz" args="-d $(find wros_tutorials)/config/grasps.rviz"/>
 
   <!-- grasp planning service example node -->
-  <node pkg="$(arg pkg_name)" name="grasp_planning_server" type="grasp_planning_service.py" respawn="true" output="screen" >
-    <param name="object_mesh_path" type='str' value="$(arg object_mesh_path)" />
-    <param name="gripper_name" type='str' value="$(arg gripper_name)" />
+  <node pkg="wros_tutorials" name="grasp_planning_server" type="grasp_planning_service.py" respawn="true" output="screen" >
+    <rosparam command="load" file="$(find wros_tutorials)/config/planner_params.yaml"/>
   </node>
 </launch>
