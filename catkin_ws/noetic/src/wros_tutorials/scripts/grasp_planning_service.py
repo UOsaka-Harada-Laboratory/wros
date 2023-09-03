@@ -2,7 +2,7 @@
 
 import math
 import numpy as np
-from panda3d.core import *
+from panda3d.core import Vec3, Mat4
 from transforms3d.quaternions import mat2quat
 
 import rospy
