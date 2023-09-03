@@ -32,31 +32,31 @@ class GraspPlanner():
 
             self.angle_between_contact_normals = \
                 rospy.get_param(
-                    '~antipodal_grasp/angle_between_contact_normals', 90)
+                    '~antipodal_grasp/angle_between_contact_normals', 90)  # noqa
             self.openning_direction = \
                 rospy.get_param(
-                    '~antipodal_grasp/openning_direction', 'loc_x')
+                    '~antipodal_grasp/openning_direction', 'loc_x')  # noqa
             self.max_samples = \
                 rospy.get_param(
-                    '~antipodal_grasp/max_samples', 4)
+                    '~antipodal_grasp/max_samples', 4)  # noqa
             self.min_dist_between_sampled_contact_points = \
                 rospy.get_param(
-                    '~antipodal_grasp/min_dist_between_sampled_contact_points', .016)
+                    '~antipodal_grasp/min_dist_between_sampled_contact_points', .016)  # noqa
             self.contact_offset = \
                 rospy.get_param(
-                    '~antipodal_grasp/contact_offset', .016)
+                    '~antipodal_grasp/contact_offset', .016)  # noqa
         elif gripper_name in ['suction', 'sgb30']:
             self.base = pc.World(camp=[500, 500, 500], lookatp=[0, 0, 0])
 
             self.torque_resistance = \
                 rospy.get_param(
-                    '~contact/torque_resistance', 100)
+                    '~contact/torque_resistance', 100)  # noqa
             self.min_distance = \
                 rospy.get_param(
-                    '~contact/min_distance', .1)
+                    '~contact/min_distance', .1)  # noqa
             self.reduce_radius = \
                 rospy.get_param(
-                    '~contact/reduce_radius', 100)
+                    '~contact/reduce_radius', 100)  # noqa
         else:
             rospy.logerr("The specified gripper is not implemented.")
         self.base.taskMgr.step()
@@ -284,16 +284,11 @@ class GraspPlanner():
         grasp_info_list = gpa.plan_grasps(
             self.gripper,
             self.grasp_target,
-            angle_between_contact_normals=\
-                np.radians(self.angle_between_contact_normals),
-            openning_direction=\
-                self.openning_direction,
-            max_samples=\
-                self.max_samples,
-            min_dist_between_sampled_contact_points=\
-                self.min_dist_between_sampled_contact_points,
-            contact_offset=\
-                self.contact_offset)
+            angle_between_contact_normals=np.radians(self.angle_between_contact_normals),  # noqa
+            openning_direction=self.openning_direction,  # noqa
+            max_samples=self.max_samples,  # noqa
+            min_dist_between_sampled_contact_points=self.min_dist_between_sampled_contact_points,  # noqa
+            contact_offset=self.contact_offset)  # noqa
         rospy.loginfo(
             "Number of generated grasps: %s",
             len(grasp_info_list))

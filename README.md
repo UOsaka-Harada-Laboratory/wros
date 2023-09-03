@@ -30,23 +30,26 @@ COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker compose build --no-cache --p
 # Usage
 
 1. Make and execute the docker environment
-```bash
-docker compose up
-```
-```bash
-xhost +
-docker exec -it wros_noetic_container bash
-byobu
-```
-2. Revise the planning parameters desvribed in `wros_tutorials/cofig/planner_params.yaml`  
+- Run the following command in one terminal
+  ```bash
+  docker compose up
+  ```
+- Run theese commands in another terminal
+  ```bash
+  xhost +
+  docker exec -it wros_noetic_container bash
+  ```
+2. Revise the planning parameters described in `wros_tutorials/config/planner_params.yaml`  
 3. Execute commands in the docker container  
-```bash
-roslaunch wros_tutorials plan_grasp.launch
-rosservice call /plan_grasp
-```
+    ```bash
+    byobu
+    roslaunch wros_tutorials plan_grasp.launch
+    # create new window by clicking F2 key
+    rosservice call /plan_grasp
+    ```
 
 ## [Robotiq Hand-E](https://robotiq.com/products/hand-e-adaptive-robot-gripper)
-`wros_tutorials/cofig/planner_params.yaml`
+`wros_tutorials/config/planner_params.yaml`
 ```yaml
 gripper_name: 'robotiqhe'
 object_mesh_path: '/catkin_ws/src/wros_tutorials/wrs/0000_examples/objects/tubebig.stl'
@@ -54,7 +57,7 @@ object_mesh_path: '/catkin_ws/src/wros_tutorials/wrs/0000_examples/objects/tubeb
 <img src=image/robotiqhe.gif width=720>  
 
 ## [Robotiq 2F-85](https://robotiq.com/products/2f85-140-adaptive-robot-gripper)
-`wros_tutorials/cofig/planner_params.yaml`
+`wros_tutorials/config/planner_params.yaml`
 ```yaml
 gripper_name: 'robotiq85'
 object_mesh_path: '/catkin_ws/src/wros_tutorials/wrs/0000_examples/objects/bunnysim.stl'
@@ -62,7 +65,7 @@ object_mesh_path: '/catkin_ws/src/wros_tutorials/wrs/0000_examples/objects/bunny
 <img src=image/robotiq85.gif width=720>  
 
 ## [Robotiq 2F-140](https://robotiq.com/products/2f85-140-adaptive-robot-gripper)
-`wros_tutorials/cofig/planner_params.yaml`
+`wros_tutorials/config/planner_params.yaml`
 ```yaml
 gripper_name: 'robotiq140'
 object_mesh_path: '/catkin_ws/src/wros_tutorials/wrs/0000_examples/objects/milkcarton.stl'
@@ -70,7 +73,7 @@ object_mesh_path: '/catkin_ws/src/wros_tutorials/wrs/0000_examples/objects/milkc
 <img src=image/robotiq140.gif width=720>  
 
 ## Suction gripper
-`wros_tutorials/cofig/planner_params.yaml`
+`wros_tutorials/config/planner_params.yaml`
 ```yaml
 gripper_name: 'suction'
 object_mesh_path: '/catkin_ws/src/wros_tutorials/wrs/pyhiro/suction/objects/sandpart2.stl'
@@ -78,7 +81,7 @@ object_mesh_path: '/catkin_ws/src/wros_tutorials/wrs/pyhiro/suction/objects/sand
 <img src=image/suction.gif width=720>  
 
 ## [CONVUM balloon hand SGB30](https://convum.co.jp/products/en/other-en/sgb/)
-`wros_tutorials/cofig/planner_params.yaml`
+`wros_tutorials/config/planner_params.yaml`
 ```yaml
 gripper_name: 'sgb30'
 object_mesh_path: '/catkin_ws/src/wros_tutorials/wrs/pyhiro/suction/objects/ttube.stl'
