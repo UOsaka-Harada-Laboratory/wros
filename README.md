@@ -9,7 +9,7 @@
 # Features
 
 - Docker environment for ROS Noetic packages
-- ROS node examples with [grasp planner (Wan et al., IROS'17)](https://ieeexplore.ieee.org/abstract/document/8206011)
+- ROS node examples with [grasp planners (Wan et al., IEEE TRO 2021)](https://ieeexplore.ieee.org/abstract/document/8206011)
 
 # Dependency
 
