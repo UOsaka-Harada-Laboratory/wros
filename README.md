@@ -34,7 +34,7 @@ COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker compose build --no-cache --p
   ```bash
   docker compose up
   ```
-- Run theese commands in another terminal
+- Run these commands in another terminal
   ```bash
   xhost +
   docker exec -it wros_noetic_container bash
