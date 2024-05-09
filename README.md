@@ -21,9 +21,7 @@
 
 # Installation
 ```bash
-git clone git@github.com:Osaka-University-Harada-Laboratory/wros.git --recursive --depth 1
-sudo apt install byobu -y
-cd wros
+git clone git@github.com:Osaka-University-Harada-Laboratory/wros.git --recursive --depth 1 && cd wros
 COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker compose build --no-cache --parallel 
 ```
 
@@ -51,40 +49,56 @@ COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker compose build --no-cache --p
 ## [Robotiq Hand-E](https://robotiq.com/products/hand-e-adaptive-robot-gripper)
 Please refer to [wros_tutorials/config/planner_params_robotiqhe_example.yaml](catkin_ws/noetic/src/wros_tutorials/config/planner_params_robotiqhe_example.yaml).
 ```bash
+# byobu
 roslaunch wros_tutorials plan_grasp.launch config:=planner_params_robotiqhe_example.yaml
+# F2
+# rosservice call /plan_grasp
 ```  
 <img src=image/robotiqhe.gif width=720>  
 
 ## [Robotiq 2F-85](https://robotiq.com/products/2f85-140-adaptive-robot-gripper)
 Please refer to [wros_tutorials/config/planner_params_robotiq85_example.yaml](catkin_ws/noetic/src/wros_tutorials/config/planner_params_robotiq85_example.yaml).
 ```bash
+# byobu
 roslaunch wros_tutorials plan_grasp.launch config:=planner_params_robotiq85_example.yaml
+# F2
+# rosservice call /plan_grasp
 ```  
 <img src=image/robotiq85.gif width=720>  
 
 ## [Robotiq 2F-140](https://robotiq.com/products/2f85-140-adaptive-robot-gripper)
 Please refer to [wros_tutorials/config/planner_params_robotiq140_example.yaml](catkin_ws/noetic/src/wros_tutorials/config/planner_params_robotiq140_example.yaml).
 ```bash
+# byobu
 roslaunch wros_tutorials plan_grasp.launch config:=planner_params_robotiq140_example.yaml
+# F2
+# rosservice call /plan_grasp
 ```  
 <img src=image/robotiq140.gif width=720>  
 
 ## Suction gripper
 Please refer to [wros_tutorials/config/planner_params_suction_example.yaml](catkin_ws/noetic/src/wros_tutorials/config/planner_params_suction_example.yaml).
 ```bash
+# byobu
 roslaunch wros_tutorials plan_grasp.launch config:=planner_params_suction_example.yaml
+# F2
+# rosservice call /plan_grasp
 ```  
 <img src=image/suction.gif width=720>  
 
 ## [CONVUM balloon hand SGB30](https://convum.co.jp/products/en/other-en/sgb/)
 Please refer to [wros_tutorials/config/planner_params_sgb30_example.yaml](catkin_ws/noetic/src/wros_tutorials/config/planner_params_sgb30_example.yaml).
 ```bash
+# byobu
 roslaunch wros_tutorials plan_grasp.launch config:=planner_params_sgb30_example.yaml
+# F2
+# rosservice call /plan_grasp
 ```  
 <img src=image/sgb30.gif width=720>  
 
 # Contributors
 
+We are looking for collaborators who can develop and/or manage this repository with us!
 
 # Author
 
@@ -92,3 +106,7 @@ roslaunch wros_tutorials plan_grasp.launch config:=planner_params_sgb30_example.
 [Weiwei Wan](https://wanweiwei07.github.io/)  
 [Keisuke Koyama](https://kk-hs-sa.website/)  
 [Kensuke Harada](https://www.roboticmanipulation.org/members2/kensuke-harada/)  
+
+## License
+
+This software is released under the MIT License, see [LICENSE](./LICENSE).
