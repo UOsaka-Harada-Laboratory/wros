@@ -46,7 +46,13 @@ RUN pip install -r /tmp/requirements.txt
 
 # Generates bash commands
 WORKDIR /catkin_ws/src/
+RUN echo "/usr/bin/python3 /catkin_ws/src/wros_tutorials/wrs/robot_sim/end_effectors/single_contact/suction/sgb30/sgb30.py" >> ~/.bash_history
+RUN echo "/usr/bin/python3 /catkin_ws/src/wros_tutorials/wrs/robot_sim/end_effectors/single_contact/suction/sandmmbs/sdmbs.py" >> ~/.bash_history
+RUN echo "/usr/bin/python3 /catkin_ws/src/wros_tutorials/wrs/robot_sim/end_effectors/gripper/robotiq140/robotiq140.py" >> ~/.bash_history
+RUN echo "/usr/bin/python3 /catkin_ws/src/wros_tutorials/wrs/robot_sim/end_effectors/gripper/robotiq85/robotiq85.py" >> ~/.bash_history
+RUN echo "/usr/bin/python3 /catkin_ws/src/wros_tutorials/wrs/robot_sim/end_effectors/gripper/robotiqhe/robotiqhe.py" >> ~/.bash_history
 RUN echo "catkin build -DPYTHON_EXECUTABLE=/usr/bin/python3" >> ~/.bash_history
+RUN echo "byobu" >> ~/.bash_hist
 RUN echo "rosservice call /plan_grasp" >> ~/.bash_history
 RUN echo "roslaunch wros_tutorials plan_grasp.launch config:=planner_params_sgb30_example.yaml" >> ~/.bash_history
 RUN echo "roslaunch wros_tutorials plan_grasp.launch config:=planner_params_suction_example.yaml" >> ~/.bash_history
