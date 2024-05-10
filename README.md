@@ -27,18 +27,18 @@ COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker compose build --no-cache --p
 
 # Usage
 
-1. Make and execute the docker environment
-- Run the following command in one terminal
+1. Build and run the docker environment
+- Create and start docker containers in the initially opened terminal
   ```bash
   docker compose up
   ```
-- Run these commands in another terminal
+- Execute the container in another terminal
   ```bash
   xhost +
   docker exec -it wros_noetic_container bash
   ```
-2. Revise the planning parameters described in wros_tutorials/config/XXX.yaml 
-3. Execute commands in the docker container  
+2. Change planning parameters in wros_tutorials/config/XXX.yaml 
+3. Run a planning process in the container  
     ```bash
     byobu
     roslaunch wros_tutorials plan_grasp.launch config:=XXX.yaml
@@ -99,7 +99,7 @@ roslaunch wros_tutorials plan_grasp.launch config:=planner_params_sgb30_example.
 
 # Contributors
 
-We are looking for collaborators who can develop and/or manage this repository with us!
+We always welcome collaborators!
 
 # Author
 
