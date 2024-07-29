@@ -13,11 +13,11 @@
 
 # Dependency
 
-- [Ubuntu 20.04 PC](https://ubuntu.com/certified/laptops?q=&limit=20&vendor=Dell&vendor=Lenovo&vendor=HP&release=20.04+LTS)
+- [Ubuntu 22.04 PC](https://ubuntu.com/certified/laptops?q=&limit=20&vendor=Dell&vendor=Lenovo&vendor=HP&release=22.04+LTS)
   - [ROS Noetic (Python3)](https://wiki.ros.org/noetic/Installation/Ubuntu)
-  - docker 20.10.12
-  - docker-compose 1.29.2
-  - nvidia-docker2 2.8.0-1
+  - Docker 26.1.1
+  - Docker Compose 2.27.0
+  - NVIDIA Docker 2.13.0
 
 # Installation
 ```bash
