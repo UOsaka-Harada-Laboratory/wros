@@ -11,10 +11,11 @@
 - Docker environment for ROS Noetic packages
 - ROS node examples with [grasp planners (Wan et al., IEEE TRO 2021)](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9170578)
 
-# Dependency
+# Dependency (tested as a host machine)
 
 - [Ubuntu 22.04 PC](https://ubuntu.com/certified/laptops?q=&limit=20&vendor=Dell&vendor=Lenovo&vendor=HP&release=22.04+LTS)
-  - [ROS Noetic (Python3)](https://wiki.ros.org/noetic/Installation/Ubuntu)
+  - NVIDIA GeForce RTX 3070
+  - NVIDIA Driver 470.256.02
   - Docker 26.1.1
   - Docker Compose 2.27.0
   - NVIDIA Docker 2.13.0
@@ -26,74 +27,98 @@ COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker compose build --no-cache --p
 ```
 
 # Usage
-
 1. Build and run the docker environment
 - Create and start docker containers in the initially opened terminal
-  ```bash
-  docker compose up
-  ```
-- Execute the container in another terminal
-  ```bash
-  xhost +
-  docker exec -it wros_noetic_container bash
-  ```
-2. Change planning parameters in wros_tutorials/config/XXX.yaml 
-3. Run a planning process in the container  
+    ```bash
+    docker compose up
+    ```
+ - Execute the container in another terminal
+    ```bash
+    xhost + && docker exec -it wros_noetic_container bash
+    ```
+2. Change planning parameters in wros_tutorials/config/XXX.yaml  
+3. Build program files with the revised yaml
+    ```bash
+    cd /catkin_ws && catkin build -DPYTHON_EXECUTABLE=/usr/bin/python3 && source devel/setup.bash
+    ```
+4. Run a planning process in the container  
+- Use byobu to easily command several commands  
     ```bash
     byobu
+    ```
+     - First command & F2 to create a new window & Second command ...
+     - Ctrl + F6 to close the selected window
+ - Run the grasp planner
+    ```bash
     roslaunch wros_tutorials plan_grasp.launch config:=XXX.yaml
-    # F2 to create a new window
+    ```
+ - Call the planning service
+    ```bash
     rosservice call /plan_grasp
-    # Ctrl + F6 to close the selected window
     ```
 
 ## [Robotiq Hand-E](https://robotiq.com/products/hand-e-adaptive-robot-gripper)
 Please refer to [wros_tutorials/config/planner_params_robotiqhe_example.yaml](catkin_ws/noetic/src/wros_tutorials/config/planner_params_robotiqhe_example.yaml).
 ```bash
-# byobu
+byobu
+```
+```bash
 roslaunch wros_tutorials plan_grasp.launch config:=planner_params_robotiqhe_example.yaml
-# F2
-# rosservice call /plan_grasp
+```
+```bash
+rosservice call /plan_grasp
 ```  
 <img src=image/robotiqhe.gif width=720>  
 
 ## [Robotiq 2F-85](https://robotiq.com/products/2f85-140-adaptive-robot-gripper)
 Please refer to [wros_tutorials/config/planner_params_robotiq85_example.yaml](catkin_ws/noetic/src/wros_tutorials/config/planner_params_robotiq85_example.yaml).
 ```bash
-# byobu
+byobu
+```
+```bash
 roslaunch wros_tutorials plan_grasp.launch config:=planner_params_robotiq85_example.yaml
-# F2
-# rosservice call /plan_grasp
+```
+```bash
+rosservice call /plan_grasp
 ```  
 <img src=image/robotiq85.gif width=720>  
 
 ## [Robotiq 2F-140](https://robotiq.com/products/2f85-140-adaptive-robot-gripper)
 Please refer to [wros_tutorials/config/planner_params_robotiq140_example.yaml](catkin_ws/noetic/src/wros_tutorials/config/planner_params_robotiq140_example.yaml).
 ```bash
-# byobu
+byobu
+```
+```bash
 roslaunch wros_tutorials plan_grasp.launch config:=planner_params_robotiq140_example.yaml
-# F2
-# rosservice call /plan_grasp
+```
+```bash
+rosservice call /plan_grasp
 ```  
 <img src=image/robotiq140.gif width=720>  
 
 ## Suction gripper
 Please refer to [wros_tutorials/config/planner_params_suction_example.yaml](catkin_ws/noetic/src/wros_tutorials/config/planner_params_suction_example.yaml).
 ```bash
-# byobu
+byobu
+```
+```bash
 roslaunch wros_tutorials plan_grasp.launch config:=planner_params_suction_example.yaml
-# F2
-# rosservice call /plan_grasp
+```
+```bash
+rosservice call /plan_grasp
 ```  
 <img src=image/suction.gif width=720>  
 
 ## [CONVUM balloon hand SGB30](https://convum.co.jp/products/en/other-en/sgb/)
 Please refer to [wros_tutorials/config/planner_params_sgb30_example.yaml](catkin_ws/noetic/src/wros_tutorials/config/planner_params_sgb30_example.yaml).
 ```bash
-# byobu
+byobu
+```
+```bash
 roslaunch wros_tutorials plan_grasp.launch config:=planner_params_sgb30_example.yaml
-# F2
-# rosservice call /plan_grasp
+```
+```bash
+rosservice call /plan_grasp
 ```  
 <img src=image/sgb30.gif width=720>  
 
