@@ -22,8 +22,7 @@
 
 # Installation
 ```bash
-git clone git@github.com:Osaka-University-Harada-Laboratory/wros.git --recursive --depth 1 && cd wros
-COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker compose build --no-cache --parallel 
+git clone git@github.com:Osaka-University-Harada-Laboratory/wros.git --recursive --depth 1 && cd wros && COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker compose build --no-cache --parallel 
 ```
 
 # Usage
