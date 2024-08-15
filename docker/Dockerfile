@@ -1,11 +1,14 @@
 FROM ros:noetic
 
-RUN apt-get update && apt-get install -y --no-install-recommends curl lsb-release wget gnupg
+RUN apt update -y && apt install -y --no-install-recommends curl lsb-release wget gnupg
 RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
 RUN curl -sSL 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xC1CF6E31E6BADE8868B172B4F42ED6FBAB17C654' | apt-key add -
 
-RUN apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends tzdata
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# setting environmental variables
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt update -y && apt install -y --no-install-recommends tzdata
+RUN apt update -y && apt install -y --no-install-recommends \
     ros-noetic-desktop-full \
     ros-noetic-tf \
     python3-osrf-pycommon \
@@ -14,20 +17,19 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-rospkg \
     python3-pip \
     python3-tk \
+    libxkbcommon-x11-0 \
+    libcanberra-gtk* \
+    build-essential \
+    libxcb* \
     byobu \
     git \
     vim \
-    build-essential \
-    libxkbcommon-x11-0 \
-    libcanberra-gtk* \
-    libxcb*
+    && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /tmp/
 RUN mkdir -p /catkin_ws/src && \
-	cd /catkin_ws/src && \
-	/bin/bash -c "source /opt/ros/noetic/setup.bash; catkin_init_workspace" && \
-	cd /catkin_ws && \
-	/bin/bash -c "source /opt/ros/noetic/setup.bash; catkin build" && \
+	/bin/bash -c "cd /catkin_ws/src && source /opt/ros/noetic/setup.bash; catkin_init_workspace" && \
+	/bin/bash -c "cd /catkin_ws && source /opt/ros/noetic/setup.bash; catkin build" && \
 	echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc && \
 	echo "source /catkin_ws/devel/setup.bash" >> ~/.bashrc && \
 	echo "export ROS_PACKAGE_PATH=\${ROS_PACKAGE_PATH}:/catkin_ws" >> ~/.bashrc && \
@@ -39,7 +41,7 @@ RUN wget --no-check-certificate https://www.python.org/ftp/python/3.9.5/Python-3
     && ./configure --enable-optimizations\
     && make \
     && make install
-RUN apt-get autoremove -y
+RUN apt autoremove -y
 
 COPY requirements.txt /tmp/
 RUN pip install -r /tmp/requirements.txt

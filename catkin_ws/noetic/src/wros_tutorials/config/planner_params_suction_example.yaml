@@ -1,6 +1,6 @@
 object_mesh_path: '/catkin_ws/src/wros_tutorials/wrs/pyhiro/suction/objects/sandpart2.stl'
 gripper_name: 'suction'
 contact:
-  torque_resistance: 100
-  min_distance: .1
-  reduce_radius: 100
+    torque_resistance: 100
+    min_distance: .1
+    reduce_radius: 100

@@ -1,13 +1,13 @@
 <launch>
-  <arg name="config" default="planner_params_robotiqhe_example.yaml"/>
+    <arg name="config" default="planner_params_robotiqhe_example.yaml"/>
 
-  <!-- tf generated using markers -->
-  <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_broadcaster" args="0. 0. 0. 0. 0. 0. 1. world base_link"/>
-  <node pkg="tf2_ros" type="static_transform_publisher" name="object_broadcaster" args="0. 0. 0. 0. 0. 0. 1. world object"/>
-  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find wros_tutorials)/config/grasps.rviz"/>
+    <!-- tf generated using markers -->
+    <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_broadcaster" args="0. 0. 0. 0. 0. 0. 1. world base_link"/>
+    <node pkg="tf2_ros" type="static_transform_publisher" name="object_broadcaster" args="0. 0. 0. 0. 0. 0. 1. world object"/>
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find wros_tutorials)/config/grasps.rviz"/>
 
-  <!-- grasp planning service example node -->
-  <node pkg="wros_tutorials" name="grasp_planning_server" type="grasp_planning_service.py" respawn="true" output="screen" >
-    <rosparam command="load" file="$(find wros_tutorials)/config/$(arg config)"/>
-  </node>
+    <!-- grasp planning service example node -->
+    <node pkg="wros_tutorials" name="grasp_planning_server" type="grasp_planning_service.py" respawn="true" output="screen" >
+        <rosparam command="load" file="$(find wros_tutorials)/config/$(arg config)"/>
+    </node>
 </launch>
