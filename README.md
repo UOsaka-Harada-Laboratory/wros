@@ -56,70 +56,7 @@ git clone git@github.com:Osaka-University-Harada-Laboratory/wros.git --recursive
     rosservice call /plan_grasp
     ```
 
-## [Robotiq Hand-E](https://robotiq.com/products/hand-e-adaptive-robot-gripper)
-- Please refer to [wros_tutorials/config/planner_params_robotiqhe_example.yaml](catkin_ws/noetic/src/wros_tutorials/config/planner_params_robotiqhe_example.yaml).  
-    ```bash
-    byobu
-    ```  
-    ```bash
-    roslaunch wros_tutorials plan_grasp.launch config:=planner_params_robotiqhe_example.yaml
-    ```  
-    ```bash
-    rosservice call /plan_grasp
-    ```  
-    <img src=image/robotiqhe.gif width=720>  
-
-## [Robotiq 2F-85](https://robotiq.com/products/2f85-140-adaptive-robot-gripper)
-- Please refer to [wros_tutorials/config/planner_params_robotiq85_example.yaml](catkin_ws/noetic/src/wros_tutorials/config/planner_params_robotiq85_example.yaml).  
-    ```bash
-    byobu
-    ```  
-    ```bash
-    roslaunch wros_tutorials plan_grasp.launch config:=planner_params_robotiq85_example.yaml
-    ```  
-    ```bash
-    rosservice call /plan_grasp
-    ```  
-    <img src=image/robotiq85.gif width=720>  
-
-## [Robotiq 2F-140](https://robotiq.com/products/2f85-140-adaptive-robot-gripper)
-- Please refer to [wros_tutorials/config/planner_params_robotiq140_example.yaml](catkin_ws/noetic/src/wros_tutorials/config/planner_params_robotiq140_example.yaml).  
-    ```bash
-    byobu
-    ```  
-    ```bash
-    roslaunch wros_tutorials plan_grasp.launch config:=planner_params_robotiq140_example.yaml
-    ```  
-    ```bash
-    rosservice call /plan_grasp
-    ```  
-    <img src=image/robotiq140.gif width=720>  
-
-## Suction gripper
-- Please refer to [wros_tutorials/config/planner_params_suction_example.yaml](catkin_ws/noetic/src/wros_tutorials/config/planner_params_suction_example.yaml).
-    ```bash
-    byobu
-    ```  
-    ```bash
-    roslaunch wros_tutorials plan_grasp.launch config:=planner_params_suction_example.yaml
-    ```  
-    ```bash
-    rosservice call /plan_grasp
-    ```  
-    <img src=image/suction.gif width=720>  
-
-## [CONVUM balloon hand SGB30](https://convum.co.jp/products/en/other-en/sgb/)
-- Please refer to [wros_tutorials/config/planner_params_sgb30_example.yaml](catkin_ws/noetic/src/wros_tutorials/config/planner_params_sgb30_example.yaml).  
-    ```bash
-    byobu
-    ```  
-    ```bash
-    roslaunch wros_tutorials plan_grasp.launch config:=planner_params_sgb30_example.yaml
-    ```  
-    ```bash
-    rosservice call /plan_grasp
-    ```  
-    <img src=image/sgb30.gif width=720>  
+#### Please refer to [wiki page](https://github.com/Osaka-University-Harada-Laboratory/wros/wiki/Usage-examples) for usage examples.
 
 # Contributors
 
