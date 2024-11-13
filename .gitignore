@@ -1,4 +1,5 @@
 *__pycache__/
 *.vscode
 *.pyc
-catkin_ws/noetic/src/wros_tutorials/results
+catkin_ws/noetic/src/wros_tutorials/results/*
+!catkin_ws/noetic/src/wros_tutorials/results/.gitkeep
