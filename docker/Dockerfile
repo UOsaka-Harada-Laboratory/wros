@@ -56,8 +56,11 @@ RUN echo "/usr/bin/python3 /catkin_ws/src/wros_tutorials/wrs/robot_sim/end_effec
 RUN echo "catkin build -DPYTHON_EXECUTABLE=/usr/bin/python3" >> ~/.bash_history
 RUN echo "byobu" >> ~/.bash_hist
 RUN echo "rosservice call /plan_grasp" >> ~/.bash_history
-RUN echo "roslaunch wros_tutorials plan_grasp.launch config:=planner_params_sgb30_example.yaml" >> ~/.bash_history
-RUN echo "roslaunch wros_tutorials plan_grasp.launch config:=planner_params_suction_example.yaml" >> ~/.bash_history
-RUN echo "roslaunch wros_tutorials plan_grasp.launch config:=planner_params_robotiq140_example.yaml" >> ~/.bash_history
-RUN echo "roslaunch wros_tutorials plan_grasp.launch config:=planner_params_robotiq85_example.yaml" >> ~/.bash_history
-RUN echo "roslaunch wros_tutorials plan_grasp.launch config:=planner_params_robotiqhe_example.yaml" >> ~/.bash_history
+RUN echo "roslaunch wros_tutorials plan_grasp.launch config:=planner_params_sgb30_single_example.yaml" >> ~/.bash_history
+RUN echo "roslaunch wros_tutorials plan_grasp.launch config:=planner_params_suction_single_example.yaml" >> ~/.bash_history
+RUN echo "roslaunch wros_tutorials plan_grasp.launch config:=planner_params_robotiq140_single_example.yaml" >> ~/.bash_history
+RUN echo "roslaunch wros_tutorials plan_grasp.launch config:=planner_params_robotiq85_single_example.yaml" >> ~/.bash_history
+RUN echo "roslaunch wros_tutorials plan_grasp.launch config:=planner_params_robotiqhe_single_example.yaml" >> ~/.bash_history
+RUN echo "roslaunch wros_tutorials plan_grasp.launch config:=planner_params_robotiq140_obstcl_example.yaml" >> ~/.bash_history
+RUN echo "roslaunch wros_tutorials plan_grasp.launch config:=planner_params_robotiq85_obstcl_example.yaml" >> ~/.bash_history
+RUN echo "roslaunch wros_tutorials plan_grasp.launch config:=planner_params_robotiqhe_obstcl_example.yaml" >> ~/.bash_history
