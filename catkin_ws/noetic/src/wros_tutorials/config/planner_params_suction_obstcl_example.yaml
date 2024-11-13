@@ -1,0 +1,8 @@
+object_mesh_path: '/catkin_ws/src/wros_tutorials/meshes/sandpart2.stl'
+obstcl_mesh_path: '/catkin_ws/src/wros_tutorials/meshes/table.stl'
+vis_failures: False
+gripper_name: 'suction'
+contact:
+    torque_resistance: 100
+    min_distance: .1
+    reduce_radius: 100

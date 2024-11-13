@@ -11,6 +11,7 @@ from std_srvs.srv import Empty, EmptyResponse
 from geometry_msgs.msg import Pose, TransformStamped
 from visualization_msgs.msg import Marker, MarkerArray
 
+import modeling._ode_cdhelper as mcd
 import modeling.geometric_model as gm
 import modeling.collision_model as cm
 import visualization.panda.world as wd
@@ -118,6 +119,17 @@ class GraspPlanner():
         self.grasp_target.set_rgba([.9, .75, .35, .3])
         self.grasp_target.attach_to(self.base)
         self.base.taskMgr.step()
+
+        self.obstcl_stl_path = rospy.get_param('~obstcl_mesh_path', '')
+        if self.obstcl_stl_path != '':
+            self.obstacles = []
+            self.obstacles.append(cm.CollisionModel(self.object_stl_path))
+            self.obstacles.append(cm.CollisionModel(self.obstcl_stl_path))
+            for obstacle in self.obstacles:
+                obstacle.attach_to(self.base)
+                self.base.taskMgr.step()
+        self.vis_failures = rospy.get_param('~vis_failures', False)
+
         self.markers = MarkerArray()
         pose = Pose()
         pose.position.x = 0.
@@ -143,15 +155,33 @@ class GraspPlanner():
                 self.object_stl_path,
                 scale=scale,
                 color=[1.0, 0.5, 0.5, 0.5]))
+        if self.obstcl_stl_path != '':
+            self.markers.markers.append(
+                self.gen_marker(
+                    'base_link',
+                    'obstcl',
+                    0,
+                    pose,
+                    self.obstcl_stl_path,
+                    scale=scale,
+                    color=[1.0, 0.5, 0.5, 0.5]))
 
         self.pose_dict = {}
         self.br = tf2_ros.StaticTransformBroadcaster()
         if gripper_name in ['robotiqhe', 'robotiq85', 'robotiq140']:
-            self.planning_service = rospy.Service(
-                'plan_grasp', Empty, self.plan_grasps)
+            if self.obstcl_stl_path == '':
+                self.planning_service = rospy.Service(
+                    'plan_grasp', Empty, self.plan_antipodal_grasps_single_object)
+            else:
+                self.planning_service = rospy.Service(
+                    'plan_grasp', Empty, self.plan_antipodal_grasps)
         elif gripper_name in ['suction', 'sgb30']:
-            self.planning_service = rospy.Service(
-                'plan_grasp', Empty, self.plan_contacts)
+            if self.obstcl_stl_path == '':
+                self.planning_service = rospy.Service(
+                    'plan_grasp', Empty, self.plan_suction_grasps_single_object)
+            else:
+                self.planning_service = rospy.Service(
+                    'plan_grasp', Empty, self.plan_suction_grasps)
         else:
             rospy.logerr("The specified gripper is not implemented.")
         self.marker_pub = rospy.Publisher(
@@ -216,8 +246,8 @@ class GraspPlanner():
 
         return marker
 
-    def plan_contacts(self, req):
-        """ Plans contacts. """
+    def plan_suction_grasps_single_object(self, req):
+        """ Plans suction grasps for a single object. """
 
         contact_planner = fs.Freesuc(
             self.object_stl_path,
@@ -278,8 +308,70 @@ class GraspPlanner():
 
         return EmptyResponse()
 
-    def plan_grasps(self, req):
-        """ Plans grasps. """
+    def plan_suction_grasps(self, req):
+        """ Plans suction grasps. """
+
+        contact_planner = fs.Freesuc(
+            self.object_stl_path,
+            handpkg=self.gripper,
+            torqueresist=self.torque_resistance)
+        contact_planner.removeBadSamples(
+            mindist=self.min_distance)
+        contact_planner.clusterFacetSamplesRNN(
+            reduceRadius=self.reduce_radius)
+        pg.plotAxisSelf(self.base.render, Vec3(0, 0, 0))
+        contact_planner.removeHndcc(self.base)
+        objnp = pg.packpandanp(
+            contact_planner.objtrimesh.vertices,
+            contact_planner.objtrimesh.face_normals,
+            contact_planner.objtrimesh.faces,
+            name='')
+        objnp.setColor(.37, .37, .35, 1)
+        objnp.reparentTo(self.base.render)
+        rospy.loginfo(
+            "Number of generated grasps: %s",
+            len(contact_planner.sucrotmats))
+
+        contact_result = []
+        parent_frame = 'object'
+        for i, hndrot in enumerate(contact_planner.sucrotmats):
+            if i >= 1:
+                tmphand = self.gripper.newHandNM(hndcolor=[.7, .7, .7, .7])
+                centeredrot = Mat4(hndrot)
+                tmphand.setMat(centeredrot)
+                tmphand.reparentTo(self.base.render)
+                tmphand.setColor(.5, .5, .5, .3)
+                contact_pos = [tmphand.getPos()[i] / 1000 for i in range(3)]
+                mat = tmphand.getMat()
+                contact_mat = \
+                    [list([mat[i][0], mat[i][1], mat[i][2]]) for i in range(3)]
+
+                pose_b = Pose()
+                pose_b.position.x = contact_pos[0]
+                pose_b.position.y = contact_pos[1]
+                pose_b.position.z = contact_pos[2]
+                q = mat2quat(np.array(contact_mat).T)
+                pose_b.orientation.x = q[1]
+                pose_b.orientation.y = q[2]
+                pose_b.orientation.z = q[3]
+                pose_b.orientation.w = q[0]
+                self.markers.markers.append(
+                    self.gen_marker(
+                        parent_frame,
+                        'body_'+str(i),
+                        0,
+                        pose_b,
+                        self.body_stl_path,
+                        scale=[0.001, 0.001, 0.001],
+                        color=[0.2, 0.8, 0.8, 0.8]))
+                self.pose_dict['body_'+str(i)] = \
+                    {'parent': parent_frame, 'pose': pose_b}
+                self.update_tfs()
+
+        return EmptyResponse()
+
+    def plan_antipodal_grasps_single_object(self, req):
+        """ Plans antipodal grasps for a single object. """
 
         grasp_info_list = gpa.plan_grasps(
             self.gripper,
@@ -297,6 +389,90 @@ class GraspPlanner():
             jaw_width, jaw_pos, jaw_rotmat, hnd_pos, hnd_rotmat = grasp_info
             self.gripper.grip_at_with_jcpose(jaw_pos, jaw_rotmat, jaw_width)
             self.gripper.gen_meshmodel().attach_to(self.base)
+
+            parent_frame = 'object'
+            pose_b = Pose()
+            pose_b.position.x = hnd_pos[0]
+            pose_b.position.y = hnd_pos[1]
+            pose_b.position.z = hnd_pos[2]
+            q = mat2quat(hnd_rotmat)
+            pose_b.orientation.x = q[1]
+            pose_b.orientation.y = q[2]
+            pose_b.orientation.z = q[3]
+            pose_b.orientation.w = q[0]
+            self.markers.markers.append(
+                self.gen_marker(
+                    parent_frame,
+                    'body_'+str(i),
+                    0,
+                    pose_b,
+                    self.body_stl_path))
+            self.pose_dict['body_'+str(i)] = \
+                {'parent': parent_frame, 'pose': pose_b}
+            self.update_tfs()
+
+            for k, v in self.fingers_dict.items():
+                pose = Pose()
+                pose.position.x = v['gl_pos'][0]
+                pose.position.y = v['gl_pos'][1]
+                pose.position.z = v['gl_pos'][2]
+                q = mat2quat(v['gl_rotmat'])
+                pose.orientation.x = q[1]
+                pose.orientation.y = q[2]
+                pose.orientation.z = q[3]
+                pose.orientation.w = q[0]
+                scale = [1., 1., 1.]
+                if v['scale'] is not None:
+                    scale = v['scale']
+                self.markers.markers.append(
+                    self.gen_marker(
+                        parent_frame,
+                        k+'_'+str(i),
+                        0,
+                        pose,
+                        v['mesh_file'],
+                        scale))
+                self.pose_dict[k+'_'+str(i)] = \
+                    {'parent': parent_frame, 'pose': pose}
+
+        return EmptyResponse()
+
+    def plan_antipodal_grasps(self, req):
+        """ Plans antipodal grasps. """
+
+        grasp_info_list = gpa.plan_grasps(
+            self.gripper,
+            self.grasp_target,
+            angle_between_contact_normals=np.radians(self.angle_between_contact_normals),  # noqa
+            openning_direction=self.openning_direction,  # noqa
+            max_samples=self.max_samples,  # noqa
+            min_dist_between_sampled_contact_points=self.min_dist_between_sampled_contact_points,  # noqa
+            contact_offset=self.contact_offset)  # noqa
+        rospy.loginfo(
+            "Number of generated grasps: %s",
+            len(grasp_info_list))
+
+        for i, grasp_info in enumerate(grasp_info_list):
+            jaw_width, jaw_pos, jaw_rotmat, hnd_pos, hnd_rotmat = grasp_info
+            self.gripper.grip_at_with_jcpose(jaw_pos, jaw_rotmat, jaw_width)
+
+            # checking collisions
+            collisionfree_list = []
+            for obstacle in self.obstacles:
+                for cdmesh in self.gripper.gen_meshmodel().cm_list:
+                    is_collide, cps = mcd.is_collided(
+                        cdmesh.cdmesh, obstacle.cdmesh)
+                    collisionfree_list.append(not is_collide)
+
+            # if collision-free
+            if all(collisionfree_list):
+                self.gripper.gen_meshmodel(
+                    rgba=[0, 1, 0, .3]).attach_to(self.base)
+            else:
+                if not self.vis_failures:
+                    continue
+                self.gripper.gen_meshmodel(
+                    rgba=[1, 0, 0, .3]).attach_to(self.base)
 
             parent_frame = 'object'
             pose_b = Pose()
