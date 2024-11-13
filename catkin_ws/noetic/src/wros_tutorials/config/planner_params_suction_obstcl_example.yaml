@@ -1,5 +1,5 @@
 object_mesh_path: '/catkin_ws/src/wros_tutorials/meshes/sandpart2.stl'
-obstcl_mesh_path: '/catkin_ws/src/wros_tutorials/meshes/table.stl'
+obstcl_mesh_path: '/catkin_ws/src/wros_tutorials/meshes/table_mm.stl'
 vis_failures: False
 save_results: False
 gripper_name: 'suction'
