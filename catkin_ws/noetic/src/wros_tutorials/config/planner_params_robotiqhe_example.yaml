@@ -1,4 +1,4 @@
-object_mesh_path: '/catkin_ws/src/wros_tutorials/wrs/0000_examples/objects/tubebig.stl'
+object_mesh_path: '/catkin_ws/src/wros_tutorials/meshes/tubebig.stl'
 gripper_name: 'robotiqhe'
 antipodal_grasp:
     angle_between_contact_normals: 90

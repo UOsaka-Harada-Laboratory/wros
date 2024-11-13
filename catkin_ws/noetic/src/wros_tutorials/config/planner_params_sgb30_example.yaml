@@ -1,4 +1,4 @@
-object_mesh_path: '/catkin_ws/src/wros_tutorials/wrs/pyhiro/suction/objects/ttube.stl'
+object_mesh_path: '/catkin_ws/src/wros_tutorials/meshes/ttube.stl'
 gripper_name: 'sgb30'
 contact:
     torque_resistance: 100

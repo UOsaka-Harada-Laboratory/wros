@@ -1,4 +1,4 @@
-object_mesh_path: '/catkin_ws/src/wros_tutorials/wrs/0000_examples/objects/milkcarton.stl'
+object_mesh_path: '/catkin_ws/src/wros_tutorials/meshes/milkcarton.stl'
 gripper_name: 'robotiq140'
 antipodal_grasp:
     angle_between_contact_normals: 90
