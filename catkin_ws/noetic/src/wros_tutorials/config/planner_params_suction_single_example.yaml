@@ -1,5 +1,6 @@
 object_mesh_path: '/catkin_ws/src/wros_tutorials/meshes/sandpart2.stl'
 gripper_name: 'suction'
+save_results: False
 contact:
     torque_resistance: 100
     min_distance: .1

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import numpy as np
 from panda3d.core import Vec3, Mat4
 from transforms3d.quaternions import mat2quat
@@ -114,7 +115,7 @@ class GraspPlanner():
 
         self.object_stl_path = rospy.get_param(
             '~object_mesh_path',
-            '/ros2_ws/src/wrs/0000_examples/objects/tubebig.stl')
+            '/catkin_ws/src/wros_tutorials/meshes/bunnysim.stl')
         self.grasp_target = cm.CollisionModel(self.object_stl_path)
         self.grasp_target.set_rgba([.9, .75, .35, .3])
         self.grasp_target.attach_to(self.base)
@@ -129,6 +130,8 @@ class GraspPlanner():
                 obstacle.attach_to(self.base)
                 self.base.taskMgr.step()
         self.vis_failures = rospy.get_param('~vis_failures', False)
+        self.save_results = rospy.get_param('~save_results', False)
+        self.yaml_filename = rospy.get_param('~planner_params', "")
 
         self.markers = MarkerArray()
         pose = Pose()
@@ -273,38 +276,47 @@ class GraspPlanner():
         contact_result = []
         parent_frame = 'object'
         for i, hndrot in enumerate(contact_planner.sucrotmats):
-            if i >= 1:
-                tmphand = self.gripper.newHandNM(hndcolor=[.7, .7, .7, .7])
-                centeredrot = Mat4(hndrot)
-                tmphand.setMat(centeredrot)
-                tmphand.reparentTo(self.base.render)
-                tmphand.setColor(.5, .5, .5, .3)
-                contact_pos = [tmphand.getPos()[i] / 1000 for i in range(3)]
-                mat = tmphand.getMat()
-                contact_mat = \
-                    [list([mat[i][0], mat[i][1], mat[i][2]]) for i in range(3)]
+            tmphand = self.gripper.newHandNM(hndcolor=[.7, .7, .7, .7])
+            centeredrot = Mat4(hndrot)
+            tmphand.setMat(centeredrot)
+            tmphand.reparentTo(self.base.render)
+            tmphand.setColor(.5, .5, .5, .3)
+            contact_pos = [tmphand.getPos()[i] / 1000 for i in range(3)]
+            mat = tmphand.getMat()
+            contact_mat = \
+                [list([mat[i][0], mat[i][1], mat[i][2]]) for i in range(3)]
 
-                pose_b = Pose()
-                pose_b.position.x = contact_pos[0]
-                pose_b.position.y = contact_pos[1]
-                pose_b.position.z = contact_pos[2]
-                q = mat2quat(np.array(contact_mat).T)
-                pose_b.orientation.x = q[1]
-                pose_b.orientation.y = q[2]
-                pose_b.orientation.z = q[3]
-                pose_b.orientation.w = q[0]
-                self.markers.markers.append(
-                    self.gen_marker(
-                        parent_frame,
-                        'body_'+str(i),
-                        0,
-                        pose_b,
-                        self.body_stl_path,
-                        scale=[0.001, 0.001, 0.001],
-                        color=[0.2, 0.8, 0.8, 0.8]))
-                self.pose_dict['body_'+str(i)] = \
-                    {'parent': parent_frame, 'pose': pose_b}
-                self.update_tfs()
+            pose_b = Pose()
+            pose_b.position.x = contact_pos[0]
+            pose_b.position.y = contact_pos[1]
+            pose_b.position.z = contact_pos[2]
+            q = mat2quat(np.array(contact_mat).T)
+            pose_b.orientation.x = q[1]
+            pose_b.orientation.y = q[2]
+            pose_b.orientation.z = q[3]
+            pose_b.orientation.w = q[0]
+            self.markers.markers.append(
+                self.gen_marker(
+                    parent_frame,
+                    'body_'+str(i),
+                    0,
+                    pose_b,
+                    self.body_stl_path,
+                    scale=[0.001, 0.001, 0.001],
+                    color=[0.2, 0.8, 0.8, 0.8]))
+            self.pose_dict['body_'+str(i)] = \
+                {'parent': parent_frame, 'pose': pose_b}
+            self.update_tfs()
+
+            contact_result_i = np.concatenate([contact_pos, q])
+            contact_result.append(contact_result_i)
+
+        if self.save_results:
+            result_filename = os.path.join(
+                os.path.dirname(self.object_stl_path),
+                '../results/',
+                os.path.splitext(self.yaml_filename)[0] + '.txt')
+            np.savetxt(result_filename, contact_result)
 
         return EmptyResponse()
 
@@ -335,38 +347,47 @@ class GraspPlanner():
         contact_result = []
         parent_frame = 'object'
         for i, hndrot in enumerate(contact_planner.sucrotmats):
-            if i >= 1:
-                tmphand = self.gripper.newHandNM(hndcolor=[.7, .7, .7, .7])
-                centeredrot = Mat4(hndrot)
-                tmphand.setMat(centeredrot)
-                tmphand.reparentTo(self.base.render)
-                tmphand.setColor(.5, .5, .5, .3)
-                contact_pos = [tmphand.getPos()[i] / 1000 for i in range(3)]
-                mat = tmphand.getMat()
-                contact_mat = \
-                    [list([mat[i][0], mat[i][1], mat[i][2]]) for i in range(3)]
+            tmphand = self.gripper.newHandNM(hndcolor=[.7, .7, .7, .7])
+            centeredrot = Mat4(hndrot)
+            tmphand.setMat(centeredrot)
+            tmphand.reparentTo(self.base.render)
+            tmphand.setColor(.5, .5, .5, .3)
+            contact_pos = [tmphand.getPos()[i] / 1000 for i in range(3)]
+            mat = tmphand.getMat()
+            contact_mat = \
+                [list([mat[i][0], mat[i][1], mat[i][2]]) for i in range(3)]
 
-                pose_b = Pose()
-                pose_b.position.x = contact_pos[0]
-                pose_b.position.y = contact_pos[1]
-                pose_b.position.z = contact_pos[2]
-                q = mat2quat(np.array(contact_mat).T)
-                pose_b.orientation.x = q[1]
-                pose_b.orientation.y = q[2]
-                pose_b.orientation.z = q[3]
-                pose_b.orientation.w = q[0]
-                self.markers.markers.append(
-                    self.gen_marker(
-                        parent_frame,
-                        'body_'+str(i),
-                        0,
-                        pose_b,
-                        self.body_stl_path,
-                        scale=[0.001, 0.001, 0.001],
-                        color=[0.2, 0.8, 0.8, 0.8]))
-                self.pose_dict['body_'+str(i)] = \
-                    {'parent': parent_frame, 'pose': pose_b}
-                self.update_tfs()
+            pose_b = Pose()
+            pose_b.position.x = contact_pos[0]
+            pose_b.position.y = contact_pos[1]
+            pose_b.position.z = contact_pos[2]
+            q = mat2quat(np.array(contact_mat).T)
+            pose_b.orientation.x = q[1]
+            pose_b.orientation.y = q[2]
+            pose_b.orientation.z = q[3]
+            pose_b.orientation.w = q[0]
+            self.markers.markers.append(
+                self.gen_marker(
+                    parent_frame,
+                    'body_'+str(i),
+                    0,
+                    pose_b,
+                    self.body_stl_path,
+                    scale=[0.001, 0.001, 0.001],
+                    color=[0.2, 0.8, 0.8, 0.8]))
+            self.pose_dict['body_'+str(i)] = \
+                {'parent': parent_frame, 'pose': pose_b}
+            self.update_tfs()
+
+            contact_result_i = np.concatenate([contact_pos, q])
+            contact_result.append(contact_result_i)
+
+        if self.save_results:
+            result_filename = os.path.join(
+                os.path.dirname(self.object_stl_path),
+                '../results/',
+                os.path.splitext(self.yaml_filename)[0] + '.txt')
+            np.savetxt(result_filename, contact_result)
 
         return EmptyResponse()
 
@@ -385,6 +406,7 @@ class GraspPlanner():
             "Number of generated grasps: %s",
             len(grasp_info_list))
 
+        grasp_result = []
         for i, grasp_info in enumerate(grasp_info_list):
             jaw_width, jaw_pos, jaw_rotmat, hnd_pos, hnd_rotmat = grasp_info
             self.gripper.grip_at_with_jcpose(jaw_pos, jaw_rotmat, jaw_width)
@@ -411,6 +433,9 @@ class GraspPlanner():
                 {'parent': parent_frame, 'pose': pose_b}
             self.update_tfs()
 
+            grasp_result_i = np.concatenate([hnd_pos, q])
+            grasp_result.append(grasp_result_i)
+
             for k, v in self.fingers_dict.items():
                 pose = Pose()
                 pose.position.x = v['gl_pos'][0]
@@ -435,6 +460,13 @@ class GraspPlanner():
                 self.pose_dict[k+'_'+str(i)] = \
                     {'parent': parent_frame, 'pose': pose}
 
+        if self.save_results:
+            result_filename = os.path.join(
+                os.path.dirname(self.object_stl_path),
+                '../results/',
+                os.path.splitext(self.yaml_filename)[0] + '.txt')
+            np.savetxt(result_filename, grasp_result)
+
         return EmptyResponse()
 
     def plan_antipodal_grasps(self, req):
@@ -452,6 +484,7 @@ class GraspPlanner():
             "Number of generated grasps: %s",
             len(grasp_info_list))
 
+        grasp_result = []
         for i, grasp_info in enumerate(grasp_info_list):
             jaw_width, jaw_pos, jaw_rotmat, hnd_pos, hnd_rotmat = grasp_info
             self.gripper.grip_at_with_jcpose(jaw_pos, jaw_rotmat, jaw_width)
@@ -495,6 +528,9 @@ class GraspPlanner():
                 {'parent': parent_frame, 'pose': pose_b}
             self.update_tfs()
 
+            grasp_result_i = np.concatenate([hnd_pos, q])
+            grasp_result.append(grasp_result_i)
+
             for k, v in self.fingers_dict.items():
                 pose = Pose()
                 pose.position.x = v['gl_pos'][0]
@@ -518,6 +554,13 @@ class GraspPlanner():
                         scale))
                 self.pose_dict[k+'_'+str(i)] = \
                     {'parent': parent_frame, 'pose': pose}
+
+        if self.save_results:
+            result_filename = os.path.join(
+                os.path.dirname(self.object_stl_path),
+                '../results/',
+                os.path.splitext(self.yaml_filename)[0] + '.txt')
+            np.savetxt(result_filename, grasp_result)
 
         return EmptyResponse()
 

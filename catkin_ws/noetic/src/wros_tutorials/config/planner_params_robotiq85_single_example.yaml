@@ -1,5 +1,6 @@
 object_mesh_path: '/catkin_ws/src/wros_tutorials/meshes/bunnysim.stl'
 gripper_name: 'robotiq85'
+save_results: False
 antipodal_grasp:
     angle_between_contact_normals: 90
     openning_direction: 'loc_y' 
