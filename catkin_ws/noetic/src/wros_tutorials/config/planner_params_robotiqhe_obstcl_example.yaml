@@ -1,7 +1,7 @@
 object_mesh_path: '/catkin_ws/src/wros_tutorials/meshes/tubebig.stl'
 obstcl_mesh_path: '/catkin_ws/src/wros_tutorials/meshes/table.stl'
 vis_failures: True
-save_results: False
+save_results: True
 gripper_name: 'robotiqhe'
 antipodal_grasp:
     angle_between_contact_normals: 90

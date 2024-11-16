@@ -1,7 +1,7 @@
 object_mesh_path: '/catkin_ws/src/wros_tutorials/meshes/bunnysim.stl'
 obstcl_mesh_path: '/catkin_ws/src/wros_tutorials/meshes/table.stl'
 vis_failures: True
-save_results: False
+save_results: True
 gripper_name: 'robotiq85'
 antipodal_grasp:
     angle_between_contact_normals: 90
