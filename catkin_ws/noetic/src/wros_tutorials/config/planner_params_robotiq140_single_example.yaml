@@ -1,4 +1,5 @@
 object_mesh_path: '/catkin_ws/src/wros_tutorials/meshes/milkcarton.stl'
+obstcl_mesh_path: ''
 gripper_name: 'robotiq140'
 save_results: False
 antipodal_grasp:

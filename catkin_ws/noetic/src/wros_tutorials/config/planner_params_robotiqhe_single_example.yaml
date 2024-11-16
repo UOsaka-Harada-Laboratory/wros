@@ -1,4 +1,5 @@
 object_mesh_path: '/catkin_ws/src/wros_tutorials/meshes/tubebig.stl'
+obstcl_mesh_path: ''
 gripper_name: 'robotiqhe'
 save_results: False
 antipodal_grasp:

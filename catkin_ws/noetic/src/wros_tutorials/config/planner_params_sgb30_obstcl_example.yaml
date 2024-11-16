@@ -1,9 +1,0 @@
-object_mesh_path: '/catkin_ws/src/wros_tutorials/meshes/ttube.stl'
-obstcl_mesh_path: '/catkin_ws/src/wros_tutorials/meshes/table_mm.stl'
-vis_failures: False
-save_results: False
-gripper_name: 'sgb30'
-contact:
-    torque_resistance: 100
-    min_distance: .1
-    reduce_radius: 100
