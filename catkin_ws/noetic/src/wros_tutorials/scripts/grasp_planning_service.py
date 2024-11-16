@@ -250,11 +250,11 @@ class GraspPlanner():
             self.markers.markers.append(
                 self.gen_marker(
                     parent_frame,
-                    'body_'+str(i),
+                    'body_' + str(i),
                     0,
                     pose_b,
                     self.body_mesh_path))
-            self.pose_dict['body_'+str(i)] = \
+            self.pose_dict['body_' + str(i)] = \
                 {'parent': parent_frame, 'pose': pose_b}
             self.update_tfs()
 
@@ -277,12 +277,12 @@ class GraspPlanner():
                 self.markers.markers.append(
                     self.gen_marker(
                         parent_frame,
-                        k+'_'+str(i),
+                        k + '_' + str(i),
                         0,
                         pose,
                         v['mesh_file'],
                         scale))
-                self.pose_dict[k+'_'+str(i)] = \
+                self.pose_dict[k + '_' + str(i)] = \
                     {'parent': parent_frame, 'pose': pose}
 
         if self.save_results:
@@ -344,11 +344,11 @@ class GraspPlanner():
             self.markers.markers.append(
                 self.gen_marker(
                     parent_frame,
-                    'body_'+str(i),
+                    'body_' + str(i),
                     0,
                     pose_b,
                     self.body_mesh_path))
-            self.pose_dict['body_'+str(i)] = \
+            self.pose_dict['body_' + str(i)] = \
                 {'parent': parent_frame, 'pose': pose_b}
             self.update_tfs()
 
@@ -371,12 +371,12 @@ class GraspPlanner():
                 self.markers.markers.append(
                     self.gen_marker(
                         parent_frame,
-                        k+'_'+str(i),
+                        k + '_' + str(i),
                         0,
                         pose,
                         v['mesh_file'],
                         scale))
-                self.pose_dict[k+'_'+str(i)] = \
+                self.pose_dict[k + '_' + str(i)] = \
                     {'parent': parent_frame, 'pose': pose}
 
         if self.save_results:
