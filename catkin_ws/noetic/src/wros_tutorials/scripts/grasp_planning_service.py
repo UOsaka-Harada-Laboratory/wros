@@ -50,14 +50,14 @@ class GraspPlanner():
         if gripper_name == 'robotiqhe':
             import robot_sim.end_effectors.gripper.robotiqhe.robotiqhe as gr
             self.gripper = gr.RobotiqHE()
-            self.body_stl_path = self.gripper.lft.lnks[0]['mesh_file']
+            self.body_mesh_path = self.gripper.lft.lnks[0]['mesh_file']
             self.fingers_dict = {
                 'gripper.lft.lnks.1': self.gripper.lft.lnks[1],
                 'gripper.rgt.lnks.1': self.gripper.rgt.lnks[1]}
         elif gripper_name == 'robotiq85':
             import robot_sim.end_effectors.gripper.robotiq85.robotiq85 as gr
             self.gripper = gr.Robotiq85()
-            self.body_stl_path = self.gripper.lft_outer.lnks[0]['mesh_file']
+            self.body_mesh_path = self.gripper.lft_outer.lnks[0]['mesh_file']
             self.fingers_dict = {
                 'gripper.lft_outer.lnks.1': self.gripper.lft_outer.lnks[1],
                 'gripper.rgt_outer.lnks.1': self.gripper.rgt_outer.lnks[1],
@@ -72,7 +72,7 @@ class GraspPlanner():
         elif gripper_name == 'robotiq140':
             import robot_sim.end_effectors.gripper.robotiq140.robotiq140 as gr
             self.gripper = gr.Robotiq140()
-            self.body_stl_path = self.gripper.lft_outer.lnks[0]['mesh_file']
+            self.body_mesh_path = self.gripper.lft_outer.lnks[0]['mesh_file']
             self.fingers_dict = {
                 'gripper.lft_outer.lnks.1': self.gripper.lft_outer.lnks[1],
                 'gripper.rgt_outer.lnks.1': self.gripper.rgt_outer.lnks[1],
@@ -89,26 +89,25 @@ class GraspPlanner():
         gm.gen_frame().attach_to(self.base)
         self.base.taskMgr.step()
 
-        self.object_stl_path = rospy.get_param(
+        self.object_mesh_path = rospy.get_param(
             '~object_mesh_path',
             '/catkin_ws/src/wros_tutorials/meshes/bunnysim.stl')
-        self.grasp_target = cm.CollisionModel(self.object_stl_path)
+        self.grasp_target = cm.CollisionModel(self.object_mesh_path)
         self.grasp_target.set_rgba([.9, .75, .35, .3])
         self.grasp_target.attach_to(self.base)
         self.base.taskMgr.step()
 
-        self.obstcl_stl_path = rospy.get_param('~obstcl_mesh_path', '')
-        rospy.loginfo(self.obstcl_stl_path)
-        if self.obstcl_stl_path != '':
+        self.obstcl_mesh_path = rospy.get_param('~obstcl_mesh_path', '')
+        if self.obstcl_mesh_path != '':
             self.obstacles = []
-            self.obstacles.append(cm.CollisionModel(self.object_stl_path))
-            self.obstacles.append(cm.CollisionModel(self.obstcl_stl_path))
+            self.obstacles.append(cm.CollisionModel(self.object_mesh_path))
+            self.obstacles.append(cm.CollisionModel(self.obstcl_mesh_path))
             for obstacle in self.obstacles:
                 obstacle.attach_to(self.base)
                 self.base.taskMgr.step()
         self.vis_failures = rospy.get_param('~vis_failures', False)
         self.save_results = rospy.get_param('~save_results', False)
-        self.yaml_filename = rospy.get_param('~planner_params', "")
+        self.config_filename = rospy.get_param('~config_filename', "")
 
         self.markers = MarkerArray()
         pose = Pose()
@@ -130,24 +129,24 @@ class GraspPlanner():
                 'object',
                 0,
                 pose,
-                self.object_stl_path,
+                self.object_mesh_path,
                 scale=scale,
                 color=[1.0, 0.5, 0.5, 0.5]))
-        if self.obstcl_stl_path != '':
+        if self.obstcl_mesh_path != '':
             self.markers.markers.append(
                 self.gen_marker(
                     'base_link',
                     'obstcl',
                     0,
                     pose,
-                    self.obstcl_stl_path,
+                    self.obstcl_mesh_path,
                     scale=scale,
                     color=[1.0, 0.5, 0.5, 0.5]))
 
         self.pose_dict = {}
         self.br = tf2_ros.StaticTransformBroadcaster()
         if gripper_name in ['robotiqhe', 'robotiq85', 'robotiq140']:
-            if self.obstcl_stl_path == '':
+            if self.obstcl_mesh_path == '':
                 self.planning_service = rospy.Service(
                     'plan_grasp', Empty, self.plan_antipodal_grasps_single_object)
             else:
@@ -182,7 +181,7 @@ class GraspPlanner():
             name,
             id_int,
             pose,
-            stl_path,
+            mesh_path,
             scale=[1., 1., 1.],
             color=[0., 0., 0., 0.]):
         """ Generates a marker.
@@ -192,7 +191,7 @@ class GraspPlanner():
                 name (str): Unique marker name
                 id_int (int): Unique id number
                 pose (geometry_msgs/Pose): Pose of the marker
-                stl_path (str): Stl file path
+                mesh_path (str): Mesh file path
                 scale (list(float)): Object scale to be displayed
                 color (list(float)): Object color to be displayed
         """
@@ -212,7 +211,7 @@ class GraspPlanner():
         marker.color.r = float(color[1])
         marker.color.g = float(color[2])
         marker.color.b = float(color[3])
-        marker.mesh_resource = 'file://' + stl_path
+        marker.mesh_resource = 'file://' + mesh_path
         marker.mesh_use_embedded_materials = True
 
         return marker
@@ -254,7 +253,7 @@ class GraspPlanner():
                     'body_'+str(i),
                     0,
                     pose_b,
-                    self.body_stl_path))
+                    self.body_mesh_path))
             self.pose_dict['body_'+str(i)] = \
                 {'parent': parent_frame, 'pose': pose_b}
             self.update_tfs()
@@ -288,9 +287,9 @@ class GraspPlanner():
 
         if self.save_results:
             result_filename = os.path.join(
-                os.path.dirname(self.object_stl_path),
+                os.path.dirname(self.object_mesh_path),
                 '../results/',
-                os.path.splitext(self.yaml_filename)[0] + '.txt')
+                os.path.splitext(self.config_filename)[0] + '.txt')
             np.savetxt(result_filename, grasp_result)
 
         return EmptyResponse()
@@ -348,7 +347,7 @@ class GraspPlanner():
                     'body_'+str(i),
                     0,
                     pose_b,
-                    self.body_stl_path))
+                    self.body_mesh_path))
             self.pose_dict['body_'+str(i)] = \
                 {'parent': parent_frame, 'pose': pose_b}
             self.update_tfs()
@@ -382,9 +381,9 @@ class GraspPlanner():
 
         if self.save_results:
             result_filename = os.path.join(
-                os.path.dirname(self.object_stl_path),
+                os.path.dirname(self.object_mesh_path),
                 '../results/',
-                os.path.splitext(self.yaml_filename)[0] + '.txt')
+                os.path.splitext(self.config_filename)[0] + '.txt')
             np.savetxt(result_filename, grasp_result)
 
         return EmptyResponse()

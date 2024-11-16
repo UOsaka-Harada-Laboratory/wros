@@ -9,6 +9,6 @@
     <!-- grasp planning service example node -->
     <node pkg="wros_tutorials" name="grasp_planning_server" type="grasp_planning_service.py" respawn="true" output="screen" >
         <rosparam command="load" file="$(find wros_tutorials)/config/$(arg config)"/>
-        <param name="planner_params" value="$(arg config)"/>
+        <param name="config_filename" value="$(arg config)"/>
     </node>
 </launch>
