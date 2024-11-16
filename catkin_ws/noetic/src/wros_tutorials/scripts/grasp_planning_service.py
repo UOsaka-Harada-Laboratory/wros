@@ -183,7 +183,7 @@ class GraspPlanner():
             pose,
             mesh_path,
             scale=[1., 1., 1.],
-            color=[0., 0., 0., 0.]):
+            color=[0.8, 0.8, 0.8, 0.8]):
         """ Generates a marker.
 
             Attributes:
