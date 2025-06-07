@@ -1,8 +1,15 @@
 FROM ros:noetic
 
-RUN apt update -y && apt install -y --no-install-recommends curl lsb-release wget gnupg
-RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
-RUN curl -sSL 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xC1CF6E31E6BADE8868B172B4F42ED6FBAB17C654' | apt-key add -
+# Remove any existing references to snapshots.ros.org
+RUN rm -f /etc/apt/sources.list.d/*ros* && \
+    sed -i '/snapshots.ros.org/d' /etc/apt/sources.list
+
+# Add packages.ros.org for Noetic
+RUN apt update && apt install -y --no-install-recommends \
+    curl lsb-release wget gnupg \
+ && curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.key | apt-key add - \
+ && echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros1.list \
+ && apt update
 
 # setting environmental variables
 ENV DEBIAN_FRONTEND noninteractive
