@@ -2,12 +2,10 @@
 
 import os
 import numpy as np
-from panda3d.core import Vec3, Mat4
 from transforms3d.quaternions import mat2quat
 
 import rospy
 import tf2_ros
-import rosparam
 from std_srvs.srv import Empty, EmptyResponse
 from geometry_msgs.msg import Pose, TransformStamped
 from visualization_msgs.msg import Marker, MarkerArray
@@ -160,7 +158,7 @@ class GraspPlanner():
     def update_tfs(self):
         """ Sends tfs. """
 
-        if self.pose_dict is not {}:
+        if self.pose_dict:
             for name, data in self.pose_dict.items():
                 t = TransformStamped()
                 t.header.stamp = rospy.Time.now()

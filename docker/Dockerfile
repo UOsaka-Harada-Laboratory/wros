@@ -66,4 +66,4 @@ RUN echo "roslaunch wros_tutorials plan_grasp.launch config:=planner_params_robo
 RUN echo "roslaunch wros_tutorials plan_grasp.launch config:=planner_params_robotiq85_obstcl_example.yaml" >> ~/.bash_history
 RUN echo "roslaunch wros_tutorials plan_grasp.launch config:=planner_params_robotiqhe_obstcl_example.yaml" >> ~/.bash_history
 RUN echo "rosservice call /plan_grasp" >> ~/.bash_history
-RUN echo "byobu" >> ~/.bash_hist
+RUN echo "byobu" >> ~/.bash_history
