@@ -4,6 +4,11 @@
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 ![repo size](https://img.shields.io/github/repo-size/UOsaka-Harada-Laboratory/wros)
 
+> **⚠️ This repository is archived.**
+> ROS 1 Noetic reached end of life on 2025-05-31. This repository is kept
+> read-only for historical reference. For the ROS 2 Jazzy (Ubuntu 24.04)
+> port, see **[wros2](https://github.com/UOsaka-Harada-Laboratory/wros2)**.
+
 - ROS Noetic node examples with robot motion planners implemented in [WRS](https://github.com/wanweiwei07/wrs).
 
 # Features
